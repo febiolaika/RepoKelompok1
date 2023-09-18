@@ -4,7 +4,6 @@ import 'package:ugd_layout/view/register.dart';
 import 'package:ugd_layout/component/form_component.dart';
 
 class LoginView extends StatefulWidget {
-
   final Map? data;
   const LoginView({super.key, this.data});
 
@@ -17,7 +16,6 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-
     TextEditingController usernameController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
@@ -39,9 +37,8 @@ class _LoginViewState extends State<LoginView> {
                   hintTxt: "Username",
                   helperTxt: "Inputkan User yang telah didaftar",
                   iconData: Icons.person),
-
               inputForm((p0) {
-                if(p0 == null || p0.isEmpty){
+                if (p0 == null || p0.isEmpty) {
                   return "password kosong";
                 }
                 return null;
@@ -51,56 +48,53 @@ class _LoginViewState extends State<LoginView> {
                   hintTxt: "Password",
                   helperTxt: "Inputkan Password",
                   iconData: Icons.password),
-              
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-
                   ElevatedButton(
-
-                    onPressed: () {
-
-                      if (_formKey.currentState!.validate()) {
-
-
-                        if(dataForm!['username'] == usernameController.text && dataForm['password'] == passwordController.text )
-                        {
-
-                          Navigator.push(
-                            context, 
-                            MaterialPageRoute(
-                              builder: (_) =>const HomeView()));
-                        }else{
-                              showDialog(context: context, builder:(_)=>AlertDialog(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          if (dataForm!['username'] ==
+                                  usernameController.text &&
+                              dataForm['password'] == passwordController.text) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const HomeView()));
+                          } else {
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
                                 title: const Text('Password Salah'),
-
                                 content: TextButton(
-
-                                  onPressed: () =>pushRegister(context),
-                                  child: const Text('Daftar Disini !!')),
-                                actions:  <Widget> [
+                                    onPressed: () => pushRegister(context),
+                                    child: const Text('Daftar Disini !!')),
+                                actions: <Widget>[
                                   TextButton(
-                                    onPressed: () => Navigator.pop(context, 'Cancel'),
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'Cancel'),
                                     child: const Text('Cancel'),
                                   ),
                                   TextButton(
-                                    onPressed: () => Navigator.pop(context, 'OK'),
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
                                     child: const Text('OK'),
                                   ),
                                 ],
-                              ),);
+                              ),
+                            );
+                          }
                         }
-                      }
-                    },
-                    child: const Text('Login')),
-                TextButton(
-                    onPressed: () {
+                      },
+                      child: const Text('Login')),
+                  TextButton(
+                      onPressed: () {
                         Map<String, dynamic> formData = {};
                         formData['username'] = usernameController.text;
                         formData['password'] = passwordController.text;
                         pushRegister(context);
-                    },
-                    child: const Text('Belum punya akun ?')),
+                      },
+                      child: const Text('Belum punya akun ?')),
                 ],
               ),
             ],
@@ -109,7 +103,13 @@ class _LoginViewState extends State<LoginView> {
       ),
     );
   }
+
   void pushRegister(BuildContext context) {
-    Navigator.push(context,MaterialPageRoute(builder: (_) => const RegisterView(),),);
-  } 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const RegisterView(),
+      ),
+    );
+  }
 }
