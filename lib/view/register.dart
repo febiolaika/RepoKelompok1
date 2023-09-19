@@ -103,6 +103,26 @@ class _RegisterViewState extends State<RegisterView> {
                   });
                 },
               ),
+              showAlertDialog(BuildContext context){
+                Widget okButton = TextButton(
+                  child: Text("OK"),
+                  onPressed: (){},
+                  ),
+                AlertDialog alert = AlertDialog(
+                  title: Text("Judul Placeholder"),
+                  content: Text("Apakah informasi yang dimasukkan sudah benar?"),
+                  actions: [
+                    okbutton,
+                    ],
+                  );
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context){
+                    return alert;
+                  },
+                );
+              }
+                )
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
