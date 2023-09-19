@@ -61,6 +61,11 @@ class _LoginViewState extends State<LoginView> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (_) => const HomeView()));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                  content: Text('Login Berhasil!'),
+                                  duration: Duration(seconds: 3)),
+                            );
                           } else {
                             showDialog(
                               context: context,
