@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class InputForm extends StatefulWidget {
-  Function(String?) validasi;
+  final Function(String?) validasi;
   final TextEditingController controller;
   final String hintTxt;
   final String helperTxt;
