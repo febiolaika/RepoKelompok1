@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ugd_layout/view/home.dart';
 import 'package:ugd_layout/view/register.dart';
 import 'package:ugd_layout/component/form_component.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginView extends StatefulWidget {
   final Map? data;
@@ -21,13 +22,14 @@ class _LoginViewState extends State<LoginView> {
 
     Map? dataForm = widget.data;
     return Scaffold(
-      body: SafeArea(
+      body: Center(
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              inputForm((p0) {
+              InputForm(
+                validasi: (p0) {
                 if (p0 == null || p0.isEmpty) {
                   return "username tidak boleh kosong";
                 }
@@ -37,7 +39,7 @@ class _LoginViewState extends State<LoginView> {
                   hintTxt: "Username",
                   helperTxt: "Inputkan User yang telah didaftar",
                   iconData: Icons.person),
-              inputForm((p0) {
+              InputForm(validasi: (p0) {
                 if (p0 == null || p0.isEmpty) {
                   return "password kosong";
                 }
@@ -48,6 +50,7 @@ class _LoginViewState extends State<LoginView> {
                   hintTxt: "Password",
                   helperTxt: "Inputkan Password",
                   iconData: Icons.password),
+                  
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -57,6 +60,7 @@ class _LoginViewState extends State<LoginView> {
                           if (dataForm!['username'] ==
                                   usernameController.text &&
                               dataForm['password'] == passwordController.text) {
+                                Fluttertoast.showToast(msg: 'Login Berhasil');
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
