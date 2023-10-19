@@ -1,4 +1,4 @@
-name: ugd_layout
+name: ugd_bloc
 description: A new Flutter project.
 publish_to: 'none'
 version: 0.1.0
@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  fluttertoast: ^8.2.2
+  flutter_bloc: ^8.0.1
 
 dev_dependencies:
   flutter_test:

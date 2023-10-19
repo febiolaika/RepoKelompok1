@@ -1,6 +1,6 @@
 {
-    "name": "ugd_layout",
-    "short_name": "ugd_layout",
+    "name": "ugd_bloc",
+    "short_name": "ugd_bloc",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

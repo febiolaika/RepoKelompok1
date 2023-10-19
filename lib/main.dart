@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ugd_layout/view/login.dart';
+import 'package:ugd_bloc/page/login_page.dart';
+import 'package:ugd_bloc/page/register_page.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,8 +11,16 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginView(),
+    return MaterialApp(
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+      ),
+      initialRoute: '/login',
+      routes: {
+        '/login': (context) => const LoginView(),
+        '/register': (context) => const RegisterView(),
+      },
     );
   }
 }
