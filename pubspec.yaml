@@ -1,4 +1,4 @@
-name: ugd_bloc
+name: ugd6_1217
 description: A new Flutter project.
 publish_to: 'none'
 version: 0.1.0
@@ -9,7 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_bloc: ^8.0.1
+
+  sqflite: ^2.2.6
+  flutter_slidable: ^0.6.0
 
 dev_dependencies:
   flutter_test:
