@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:ugd6_1217/page/login_page.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {

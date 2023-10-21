@@ -1,7 +1,7 @@
 class User {
-  final int? id;
+  final int? noHp, id;
 
-  String? name, email, noHp;
+  String? name, email, password, gender;
 
-  User({this.id, this.name, this.email, this.noHp});
+  User({this.id, this.name, this.password, this.email, this.noHp, this.gender});
 }

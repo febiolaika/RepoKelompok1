@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd6_1217/main.dart';
 import 'package:ugd6_1217/page/register_page.dart';
+import 'package:ugd6_1217/database/database_user.dart';
+import 'package:ugd6_1217/entity/user.dart';
+import 'package:ugd6_1217/page/profile_view.dart';
+import 'package:ugd6_1217/page/product_view.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -12,6 +18,16 @@ class _LoginViewState extends State<LoginView> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isPasswordVisible = false;
+
+  Future<void> saveUserProfile(String username, String password, String email, int noHp, String gender) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+    await prefs.setString('password', password);
+    await prefs.setString('email', email);
+    await prefs.setInt('noHp', noHp);
+    await prefs.setString('gender', gender);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,44 +49,61 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
-                  labelText: 'Password',
-                ),
-                obscureText: true,
+                  decoration: InputDecoration(
+                    prefixIcon: Icon(Icons.lock),
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    ),
+                   
+                    ),
+                obscureText: !isPasswordVisible,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   // Di sini Anda bisa menambahkan logika untuk memeriksa login
                   final username = _usernameController.text;
                   final password = _passwordController.text;
+                  List<Map<String, dynamic>> data = await USERHelper.getUser();
+                  bool Login = false;
 
-                  if (username == 'contohuser' &&
-                      password == 'contohpassword') {
+                  for(int i=0;i<data.length;i++){
+                    if (username == data[i]['username'] && password == data[i]['password']) {
                     // Redirect atau lakukan tindakan lain jika login berhasil
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => HomeScreen()));
-                  } else {
-                    // Tampilkan pesan kesalahan jika login gagal
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text('Login Gagal'),
-                          content: const Text('Username atau password salah.'),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                    Login = true;
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => ProductView()));
+                    }     
                   }
+
+                  if(Login == false){
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Login Gagal'),
+                            content: const Text('Username atau password salah.'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
+                  
                 },
                 child: const Text('Login'),
               ),
@@ -90,7 +123,14 @@ class _LoginViewState extends State<LoginView> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => const RegisterView(),
+                          builder: (_) => const RegisterView(
+                            name: null,
+                            password: null,
+                            email: null,
+                            noHp: null,
+                            gender: null,
+                            id: null,
+                          ),
                         ),
                       );
                     },
@@ -113,18 +153,3 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Halaman Beranda'),
-      ),
-      body: const Center(
-        child: Text('Selamat datang di Aplikasi Saya!'),
-      ),
-    );
-  }
-}

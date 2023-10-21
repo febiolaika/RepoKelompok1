@@ -8,7 +8,7 @@ class USERHelper {
         username TEXT,
         password TEXT,
         email TEXT,
-        noHp TEXT,
+        noHp INTEGER,
         gender TEXT
       )
       """);
@@ -21,7 +21,7 @@ class USERHelper {
     });
   }
 
-  static Future<int> addUser(String username, String password, String email, String noHp, String gender) async {
+  static Future<int> addUser(String username, String password, String email, int noHp, String gender) async {
     final db = await USERHelper.db();
     final data = {'username': username,'password': password, 'email': email, 'noHp': noHp, 'gender': gender};
     return await db.insert('user', data);
@@ -33,7 +33,7 @@ class USERHelper {
   }
 
   static Future<int> editUser(
-      int id, String username, String password, String email, String noHp, String gender) async {
+      int id, String username, String password, String email, int noHp, String gender) async {
     final db = await USERHelper.db();
     final data = {'username': username,'password': password, 'email': email, 'noHp': noHp, 'gender': gender};
     return await db.update('user', data, where: "id = $id");

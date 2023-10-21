@@ -1,9 +1,23 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:ugd6_1217/database/database_user.dart';
+import 'package:ugd6_1217/entity/user.dart';
+import 'package:ugd6_1217/page/login_page.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({Key? key}) : super(key: key);
+  const RegisterView({
+    super.key,
+    required this.name,
+    required this.password,
+    required this.email,
+    required this.noHp,
+    required this.gender,
+    required this.id});
+
+  final String? name, password, email, gender;
+  final int? noHp,id;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -11,11 +25,13 @@ class RegisterView extends StatefulWidget {
 
 class _RegisterViewState extends State<RegisterView> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _noHpController = TextEditingController();
-  final TextEditingController _genderController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  // TextEditingController _noHpController = TextEditingController();
+  int noHp = 0;
+  TextEditingController _genderController = TextEditingController();
+  bool isPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +60,21 @@ class _RegisterViewState extends State<RegisterView> {
                 SizedBox(height: 20),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(labelText: 'Password'),
+                  decoration: InputDecoration(
+                    labelText: 'Password',
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          isPasswordVisible = !isPasswordVisible;
+                        });
+                      },
+                    ),
+                   
+                    ),
+                  
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Masukkan Password!';
@@ -54,7 +84,7 @@ class _RegisterViewState extends State<RegisterView> {
                     }
                     return null;
                   },
-                  obscureText: true,
+                  obscureText: !isPasswordVisible,
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -72,7 +102,8 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 SizedBox(height: 20),
                 TextFormField(
-                  controller: _noHpController,
+                  // controller: _noHpController,
+                  keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: 'Nomor Telepon'),
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -83,6 +114,9 @@ class _RegisterViewState extends State<RegisterView> {
                     }
                     return null;
                   },
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                  ],
                 ),
                 SizedBox(height: 20),
                 TextFormField(
@@ -100,21 +134,42 @@ class _RegisterViewState extends State<RegisterView> {
                 ),
                 SizedBox(height: 20),
                 ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      final name = _nameController.text;
-                      final password = _passwordController.text;
-                      final email = _emailController.text;
-                      final phone = _noHpController.text;
-                      final gender = _genderController.text;
-                    }
-                    // Di sini Anda dapat menangani logika pendaftaran, misalnya, mengirimkan data ke server atau menyimpan dalam penyimpanan lokal.
-                  },
                   child: Text('Daftar'),
+                  onPressed: () async {
+                     if (_formKey.currentState!.validate()) {
+                        User newUser = User(
+                        name: _nameController.text,
+                        password: _passwordController.text,
+                        email: _emailController.text,
+                        noHp: 0,
+                        gender: _genderController.text,
+                      );
+                     
+                     if (widget.id == null) {
+                        await addUser();
+                      } else {
+                        await editUser(widget.id!);
+                      }
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                        builder: (context) => LoginView(), // Ganti dengan halaman login Anda
+                      ));
+                     // Di sini Anda dapat menangani logika pendaftaran, misalnya, mengirimkan data ke server atau menyimpan dalam penyimpanan lokal.
+                   }
+                  },
                 ),
               ],
             ),
           )),
     );
   }
+
+  Future<void> addUser() async {
+    await USERHelper.addUser(_nameController.text, _passwordController.text, _emailController.text, noHp, _genderController.text);
+  }
+
+  Future<void> editUser(int id) async {
+    await USERHelper.editUser(id, _nameController.text, _passwordController.text, _emailController.text, noHp, _genderController.text);
+  }
 }
+
+
