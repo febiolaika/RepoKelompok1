@@ -7,17 +7,17 @@ import 'package:ugd6_1217/entity/user.dart';
 import 'package:ugd6_1217/page/login_page.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({
-    super.key,
-    required this.name,
-    required this.password,
-    required this.email,
-    required this.noHp,
-    required this.gender,
-    required this.id});
+  const RegisterView(
+      {super.key,
+      required this.name,
+      required this.password,
+      required this.email,
+      required this.noHp,
+      required this.gender,
+      required this.id});
 
   final String? name, password, email, gender;
-  final int? noHp,id;
+  final int? noHp, id;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -64,7 +64,9 @@ class _RegisterViewState extends State<RegisterView> {
                     labelText: 'Password',
                     suffixIcon: IconButton(
                       icon: Icon(
-                        isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        isPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
                       ),
                       onPressed: () {
                         setState(() {
@@ -72,9 +74,7 @@ class _RegisterViewState extends State<RegisterView> {
                         });
                       },
                     ),
-                   
-                    ),
-                  
+                  ),
                   validator: (value) {
                     if (value!.isEmpty) {
                       return 'Masukkan Password!';
@@ -97,6 +97,7 @@ class _RegisterViewState extends State<RegisterView> {
                     if (!value.contains('@')) {
                       return 'Email harus menggunakan @!';
                     }
+
                     return null;
                   },
                 ),
@@ -136,40 +137,106 @@ class _RegisterViewState extends State<RegisterView> {
                 ElevatedButton(
                   child: Text('Daftar'),
                   onPressed: () async {
-                     if (_formKey.currentState!.validate()) {
+                    if (_formKey.currentState!.validate()) {
+                      // Periksa apakah email unik
+                      bool isUniqueEmail =
+                          await isEmailUnique(_emailController.text);
+
+                      if (isUniqueEmail) {
+                        // Buat objek User
                         User newUser = User(
-                        name: _nameController.text,
-                        password: _passwordController.text,
-                        email: _emailController.text,
-                        noHp: 0,
-                        gender: _genderController.text,
-                      );
-                     
-                     if (widget.id == null) {
-                        await addUser();
+                          name: _nameController.text,
+                          password: _passwordController.text,
+                          email: _emailController.text,
+                          noHp: noHp,
+                          gender: _genderController.text,
+                        );
+
+                        // Tambahkan pengguna ke database
+                        if (widget.id == null) {
+                          await addUser();
+                        } else {
+                          await editUser(widget.id!);
+                        }
+
+                        // Redirect ke halaman login atau halaman lainnya
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) =>
+                              LoginView(), // Ganti dengan halaman login Anda
+                        ));
+
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              'Registrasi berhasil!'), // Pesan yang ingin ditampilkan
+                          duration: Duration(seconds: 2), // Durasi pesan
+                        ));
                       } else {
-                        await editUser(widget.id!);
+                        // Tampilkan pesan kesalahan jika email tidak unik
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text(
+                              'Email sudah digunakan. Gunakan email lain.'),
+                        ));
                       }
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => LoginView(), // Ganti dengan halaman login Anda
-                      ));
-                     // Di sini Anda dapat menangani logika pendaftaran, misalnya, mengirimkan data ke server atau menyimpan dalam penyimpanan lokal.
-                   }
+                    }
                   },
-                ),
+                )
+
+                // ElevatedButton(
+                //   child: Text('Daftar'),
+                //   onPressed: () async {
+                //     if (_formKey.currentState!.validate()) {
+                //       User newUser = User(
+                //         name: _nameController.text,
+                //         password: _passwordController.text,
+                //         email: _emailController.text,
+                //         noHp: 0,
+                //         gender: _genderController.text,
+                //       );
+
+                //       if (widget.id == null) {
+                //         await addUser();
+                //       } else {
+                //         await editUser(widget.id!);
+                //       }
+                //       Navigator.of(context).pushReplacement(MaterialPageRoute(
+                //         builder: (context) =>
+                //             LoginView(), // Ganti dengan halaman login Anda
+                //       ));
+                //       // Di sini Anda dapat menangani logika pendaftaran, misalnya, mengirimkan data ke server atau menyimpan dalam penyimpanan lokal.
+                //     }
+                //   },
+                // ),
               ],
             ),
           )),
     );
   }
 
+  Future<bool> isEmailUnique(String email) async {
+    // Periksa apakah email sudah ada di database
+    List<Map<String, dynamic>> users = await USERHelper.getUser();
+    bool isUnique = true;
+    for (var user in users) {
+      if (user['email'] == email) {
+        isUnique = false;
+        break;
+      }
+    }
+    return isUnique;
+  }
+
   Future<void> addUser() async {
-    await USERHelper.addUser(_nameController.text, _passwordController.text, _emailController.text, noHp, _genderController.text);
+    await USERHelper.addUser(_nameController.text, _passwordController.text,
+        _emailController.text, noHp, _genderController.text);
   }
 
   Future<void> editUser(int id) async {
-    await USERHelper.editUser(id, _nameController.text, _passwordController.text, _emailController.text, noHp, _genderController.text);
+    await USERHelper.editUser(
+        id,
+        _nameController.text,
+        _passwordController.text,
+        _emailController.text,
+        noHp,
+        _genderController.text);
   }
 }
-
-

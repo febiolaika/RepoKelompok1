@@ -21,9 +21,16 @@ class USERHelper {
     });
   }
 
-  static Future<int> addUser(String username, String password, String email, int noHp, String gender) async {
+  static Future<int> addUser(String username, String password, String email,
+      int noHp, String gender) async {
     final db = await USERHelper.db();
-    final data = {'username': username,'password': password, 'email': email, 'noHp': noHp, 'gender': gender};
+    final data = {
+      'username': username,
+      'password': password,
+      'email': email,
+      'noHp': noHp,
+      'gender': gender
+    };
     return await db.insert('user', data);
   }
 
@@ -32,10 +39,16 @@ class USERHelper {
     return db.query('user');
   }
 
-  static Future<int> editUser(
-      int id, String username, String password, String email, int noHp, String gender) async {
+  static Future<int> editUser(int id, String username, String password,
+      String email, int noHp, String gender) async {
     final db = await USERHelper.db();
-    final data = {'username': username,'password': password, 'email': email, 'noHp': noHp, 'gender': gender};
+    final data = {
+      'username': username,
+      'password': password,
+      'email': email,
+      'noHp': noHp,
+      'gender': gender
+    };
     return await db.update('user', data, where: "id = $id");
   }
 

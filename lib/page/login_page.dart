@@ -20,7 +20,8 @@ class _LoginViewState extends State<LoginView> {
   final TextEditingController _passwordController = TextEditingController();
   bool isPasswordVisible = false;
 
-  Future<void> saveUserProfile(String username, String password, String email, int noHp, String gender) async {
+  Future<void> saveUserProfile(String username, String password, String email,
+      int noHp, String gender) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString('username', username);
     await prefs.setString('password', password);
@@ -49,21 +50,22 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 20),
               TextFormField(
                 controller: _passwordController,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.lock),
-                    labelText: 'Password',
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        isPasswordVisible ? Icons.visibility : Icons.visibility_off,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          isPasswordVisible = !isPasswordVisible;
-                        });
-                      },
+                decoration: InputDecoration(
+                  prefixIcon: Icon(Icons.lock),
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
-                   
-                    ),
+                    onPressed: () {
+                      setState(() {
+                        isPasswordVisible = !isPasswordVisible;
+                      });
+                    },
+                  ),
+                ),
                 obscureText: !isPasswordVisible,
               ),
               const SizedBox(height: 20),
@@ -75,35 +77,43 @@ class _LoginViewState extends State<LoginView> {
                   List<Map<String, dynamic>> data = await USERHelper.getUser();
                   bool Login = false;
 
-                  for(int i=0;i<data.length;i++){
-                    if (username == data[i]['username'] && password == data[i]['password']) {
-                    // Redirect atau lakukan tindakan lain jika login berhasil
-                    Login = true;
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => ProductView()));
-                    }     
+                  for (int i = 0; i < data.length; i++) {
+                    if (username == data[i]['username'] &&
+                        password == data[i]['password']) {
+                      // Redirect atau lakukan tindakan lain jika login berhasil
+                      Login = true;
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductView()));
+
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            'Login berhasil!'), // Pesan yang ingin ditampilkan
+                        duration: Duration(seconds: 3), // Durasi pesan
+                      ));
+                    }
                   }
 
-                  if(Login == false){
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Login Gagal'),
-                            content: const Text('Username atau password salah.'),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: const Text('OK'),
-                              ),
-                            ],
-                          );
-                        },
-                      );
-                    }
-                  
+                  if (Login == false) {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Login Gagal'),
+                          content: const Text('Username atau password salah.'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 },
                 child: const Text('Login'),
               ),
@@ -152,4 +162,3 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
-
