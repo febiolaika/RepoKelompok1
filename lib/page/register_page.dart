@@ -161,7 +161,7 @@ class _RegisterViewState extends State<RegisterView> {
                               _nameController.text,
                               _passwordController.text,
                               _emailController.text,
-                              _noHpController.text as int,
+                              int.parse(_noHpController.text),
                               _genderController.text);
                         }
 
@@ -182,6 +182,32 @@ class _RegisterViewState extends State<RegisterView> {
                     }
                   },
                 )
+
+                // ElevatedButton(
+                //   child: Text('Daftar'),
+                //   onPressed: () async {
+                //     if (_formKey.currentState!.validate()) {
+                //       User newUser = User(
+                //         name: _nameController.text,
+                //         password: _passwordController.text,
+                //         email: _emailController.text,
+                //         noHp: 0,
+                //         gender: _genderController.text,
+                //       );
+
+                //       if (widget.id == null) {
+                //         await addUser();
+                //       } else {
+                //         await editUser(widget.id!);
+                //       }
+                //       Navigator.of(context).pushReplacement(MaterialPageRoute(
+                //         builder: (context) =>
+                //             LoginView(), // Ganti dengan halaman login Anda
+                //       ));
+                //       // Di sini Anda dapat menangani logika pendaftaran, misalnya, mengirimkan data ke server atau menyimpan dalam penyimpanan lokal.
+                //     }
+                //   },
+                // ),
               ],
             ),
           )),
