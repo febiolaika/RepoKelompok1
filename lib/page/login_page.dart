@@ -87,7 +87,7 @@ class _LoginViewState extends State<LoginView> {
                         data[i]['noHp'],
                         data[i]['gender'],
                       );
-                      Login = true;
+                      cekLogin = true;
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
