@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:ugd6_1217/database/database_user.dart';
 import 'package:ugd6_1217/entity/user.dart';
 import 'package:ugd6_1217/page/login_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView(
@@ -28,10 +29,26 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
-  // TextEditingController _noHpController = TextEditingController();
   int noHp = 0;
   TextEditingController _genderController = TextEditingController();
   bool isPasswordVisible = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Load data pengguna dari SharedPreferences (jika ada)
+    loadUserData();
+  }
+
+  void loadUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    _nameController.text = prefs.getString('name') ?? '';
+    _passwordController.text = prefs.getString('password') ?? '';
+    _emailController.text = prefs.getString('email') ?? '';
+    noHp = prefs.getInt('noHp') ?? 0;
+    _genderController.text = prefs.getString('gender') ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,6 +160,13 @@ class _RegisterViewState extends State<RegisterView> {
                           await isEmailUnique(_emailController.text);
 
                       if (isUniqueEmail) {
+                        final prefs = await SharedPreferences.getInstance();
+                        prefs.setString('name', _nameController.text);
+                        prefs.setString('password', _passwordController.text);
+                        prefs.setString('email', _emailController.text);
+                        prefs.setInt('noHp', noHp);
+                        prefs.setString('gender', _genderController.text);
+
                         // Buat objek User
                         User newUser = User(
                           name: _nameController.text,
@@ -180,32 +204,6 @@ class _RegisterViewState extends State<RegisterView> {
                     }
                   },
                 )
-
-                // ElevatedButton(
-                //   child: Text('Daftar'),
-                //   onPressed: () async {
-                //     if (_formKey.currentState!.validate()) {
-                //       User newUser = User(
-                //         name: _nameController.text,
-                //         password: _passwordController.text,
-                //         email: _emailController.text,
-                //         noHp: 0,
-                //         gender: _genderController.text,
-                //       );
-
-                //       if (widget.id == null) {
-                //         await addUser();
-                //       } else {
-                //         await editUser(widget.id!);
-                //       }
-                //       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                //         builder: (context) =>
-                //             LoginView(), // Ganti dengan halaman login Anda
-                //       ));
-                //       // Di sini Anda dapat menangani logika pendaftaran, misalnya, mengirimkan data ke server atau menyimpan dalam penyimpanan lokal.
-                //     }
-                //   },
-                // ),
               ],
             ),
           )),

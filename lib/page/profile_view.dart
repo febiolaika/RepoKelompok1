@@ -14,8 +14,13 @@ class ProfileView extends StatefulWidget {
 class _ProfileViewState extends State<ProfileView> {
   String username = "";
   String email = "";
-  String noHp = "";
+  int noHp = 0;
   String gender = "";
+
+  TextEditingController _usernameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _noHpController = TextEditingController();
+  TextEditingController _genderController = TextEditingController();
 
   @override
   void initState() {
@@ -30,8 +35,29 @@ class _ProfileViewState extends State<ProfileView> {
       // Mengambil data profil pengguna dari Shared Preferences
       username = prefs.getString('username') ?? "No Username";
       email = prefs.getString('email') ?? "No Email";
-      noHp = prefs.getInt('noHp')?.toString() ?? "No Phone Number";
+      noHp = prefs.getInt('noHp') ?? 0;
       gender = prefs.getString('gender') ?? "No Gender";
+
+      // Mengisi controller dengan data pengguna
+      _usernameController.text = username;
+      _emailController.text = email;
+      _noHpController.text = noHp.toString();
+      _genderController.text = gender;
+    });
+  }
+
+  Future<void> saveUserProfile() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('username', _usernameController.text);
+    prefs.setString('email', _emailController.text);
+    prefs.setInt('noHp', int.parse(_noHpController.text));
+    prefs.setString('gender', _genderController.text);
+    setState(() {
+      // Update data pengguna sesuai yang baru disimpan
+      username = _usernameController.text;
+      email = _emailController.text;
+      noHp = int.parse(_noHpController.text);
+      gender = _genderController.text;
     });
   }
 
@@ -40,16 +66,42 @@ class _ProfileViewState extends State<ProfileView> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+              // Panggil method untuk menyimpan perubahan data pengguna
+              saveUserProfile();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Data profil berhasil diperbarui'),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Username: $username'),
-            Text('Email: $email'),
-            Text('Phone Number: $noHp'),
-            Text('Gender: $gender'),
-            // Tambahkan widget lain sesuai kebutuhan
+            TextFormField(
+              controller: _usernameController,
+              decoration: InputDecoration(labelText: 'Username'),
+            ),
+            TextFormField(
+              controller: _emailController,
+              decoration: InputDecoration(labelText: 'Email'),
+            ),
+            TextFormField(
+              controller: _noHpController,
+              decoration: InputDecoration(labelText: 'Phone Number'),
+              keyboardType: TextInputType.number,
+            ),
+            TextFormField(
+              controller: _genderController,
+              decoration: InputDecoration(labelText: 'Gender'),
+            ),
           ],
         ),
       ),
