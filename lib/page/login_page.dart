@@ -81,6 +81,13 @@ class _LoginViewState extends State<LoginView> {
                     if (username == data[i]['username'] &&
                         password == data[i]['password']) {
                       // Redirect atau lakukan tindakan lain jika login berhasil
+                      await saveUserProfile(
+                        username,
+                        password,
+                        data[i]['email'],
+                        data[i]['noHp'],
+                        data[i]['gender'],
+                      );
                       Login = true;
                       Navigator.pushReplacement(
                           context,
