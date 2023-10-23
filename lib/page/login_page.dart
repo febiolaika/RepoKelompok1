@@ -1,10 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ugd6_1217/main.dart';
 import 'package:ugd6_1217/page/register_page.dart';
 import 'package:ugd6_1217/database/database_user.dart';
-import 'package:ugd6_1217/entity/user.dart';
-import 'package:ugd6_1217/page/profile_view.dart';
 import 'package:ugd6_1217/page/product_view.dart';
 
 class LoginView extends StatefulWidget {
@@ -51,13 +50,14 @@ class _LoginViewState extends State<LoginView> {
               TextFormField(
                 controller: _passwordController,
                 decoration: InputDecoration(
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   labelText: 'Password',
                   suffixIcon: IconButton(
                     icon: Icon(
                       isPasswordVisible
                           ? Icons.visibility
                           : Icons.visibility_off,
+                      color: isPasswordVisible ? Colors.blue : Colors.grey,
                     ),
                     onPressed: () {
                       setState(() {
@@ -71,11 +71,10 @@ class _LoginViewState extends State<LoginView> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  // Di sini Anda bisa menambahkan logika untuk memeriksa login
                   final username = _usernameController.text;
                   final password = _passwordController.text;
                   List<Map<String, dynamic>> data = await USERHelper.getUser();
-                  bool Login = false;
+                  bool cekLogin = false;
 
                   for (int i = 0; i < data.length; i++) {
                     if (username == data[i]['username'] &&
@@ -92,17 +91,15 @@ class _LoginViewState extends State<LoginView> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ProductView()));
+                              builder: (context) => const ProductView()));
 
-                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text(
-                            'Login berhasil!'), // Pesan yang ingin ditampilkan
-                        duration: Duration(seconds: 3), // Durasi pesan
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content: Text('Login berhasil!'),
+                        duration: Duration(seconds: 3),
                       ));
                     }
                   }
-
-                  if (Login == false) {
+                  if (cekLogin == false) {
                     showDialog(
                       context: context,
                       builder: (context) {
