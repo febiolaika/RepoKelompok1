@@ -1,3 +1,5 @@
+// ignore_for_file: sort_child_properties_last, prefer_interpolation_to_compose_strings
+
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ugd6_1217/database/sql_helper_product.dart';
@@ -14,48 +16,18 @@ class ProductView extends StatefulWidget {
 class _ProductViewState extends State<ProductView> {
   int _selectedIndex = 0;
 
-  List<Widget> _pages = [ProductView(), const ProfileView()];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
-    });
-
-    if (index == 1) {
-      // Pindah ke tab Profile
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => const ProfileView(),
-        ),
-      );
-    }
-  }
-
-  List<Map<String, dynamic>> product = [];
-  TextEditingController cariController = TextEditingController();
-  void refresh(String cari) async {
-    final data = await SQLHelperProduct.getProduct(cari);
-    setState(() {
-      product = data;
-    });
-  }
-
-  @override
-  void initState() {
-    refresh('');
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      if (index == 1) {
+        _setFloatingActionButton(null);
+      } else {
+        _setFloatingActionButton(FloatingActionButton(
           onPressed: () {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => ProductInput(
+                builder: (_) => const ProductInput(
                   title: 'Input Product',
                   nama: null,
                   id: null,
@@ -66,8 +38,63 @@ class _ProductViewState extends State<ProductView> {
               ),
             ).then((value) => refresh(''));
           },
-          child: Icon(Icons.add)
-        ),
+          child: const Icon(Icons.add),
+        ));
+      }
+    });
+  }
+
+  Widget? _floatingActionButton;
+
+  void _setFloatingActionButton(Widget? fab) {
+    setState(() {
+      if (_selectedIndex == 0) {
+        _floatingActionButton = fab;
+      } else {
+        _floatingActionButton = null;
+      }
+    });
+  }
+
+  List<Map<String, dynamic>> product = [];
+  TextEditingController cariController = TextEditingController();
+  void refresh(String cari) async {
+    final data = await SQLHelperProduct.getProduct(cari);
+    if (mounted) {
+      setState(() {
+        product = data;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    refresh('');
+    _setFloatingActionButton(FloatingActionButton(
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const ProductInput(
+              title: 'Input Product',
+              nama: null,
+              id: null,
+              durasi: null,
+              harga: null,
+              gambar: null,
+            ),
+          ),
+        ).then((value) => refresh(''));
+      },
+      child: const Icon(Icons.add),
+    ));
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: _floatingActionButton,
       body: IndexedStack(
         index: _selectedIndex,
         children: [
@@ -77,7 +104,7 @@ class _ProductViewState extends State<ProductView> {
                 padding: const EdgeInsets.all(20.0),
                 child: TextFormField(
                   controller: cariController,
-                  decoration: InputDecoration(labelText: 'Cari Produk'),
+                  decoration: const InputDecoration(labelText: 'Cari Produk'),
                   onChanged: (value) => refresh(value),
                 ),
               ),
@@ -96,9 +123,8 @@ class _ProductViewState extends State<ProductView> {
                             Text(product[index]['durasi'].toString()),
                           ],
                         ),
-                        trailing: Image.asset('images/' + product[index]['gambar'] + '.jpg'),
                       ),
-                      actionPane: SlidableDrawerActionPane(),
+                      actionPane: const SlidableDrawerActionPane(),
                       secondaryActions: [
                         IconSlideAction(
                           caption: 'Update',
@@ -125,26 +151,9 @@ class _ProductViewState extends State<ProductView> {
                           color: Colors.red,
                           icon: Icons.delete,
                           onTap: () async {
-                            await deleteProduct(product[index]['id']).then((_) => refresh(''));
+                            await deleteProduct(product[index]['id'])
+                                .then((_) => refresh(''));
                           },
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const ProfileView(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            'Profile',
-                            style: TextStyle(
-                              fontSize: 14.0,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.blue,
-                            ),
-                          ),
                         ),
                       ],
                     );
@@ -156,20 +165,31 @@ class _ProductViewState extends State<ProductView> {
           const ProfileView(),
         ],
       ),
+
       bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Product',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
+              icon: Icon(Icons.shopping_cart), label: 'Product'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
       ),
+
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.shopping_cart),
+      //       label: 'Product',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person),
+      //       label: 'Profile',
+      //     ),
+      //   ],
+      //   currentIndex: _selectedIndex,
+      //   onTap: _onItemTapped,
+      // ),
     );
   }
 
