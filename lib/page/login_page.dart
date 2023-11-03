@@ -2,9 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd6_1217/notification_widget.dart';
 import 'package:ugd6_1217/page/register_page.dart';
 import 'package:ugd6_1217/database/database_user.dart';
 import 'package:ugd6_1217/page/product_view.dart';
+import 'package:ugd6_1217/notification_widget.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -14,6 +16,12 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  @override
+  void initState() {
+    super.initState();
+    NotificationWidget.init();
+  }
+
   final formKey = GlobalKey<FormState>();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -28,6 +36,8 @@ class _LoginViewState extends State<LoginView> {
     await prefs.setInt('noHp', noHp);
     await prefs.setString('gender', gender);
   }
+
+  // NotificationWidget.init();
 
   @override
   Widget build(BuildContext context) {
@@ -97,6 +107,9 @@ class _LoginViewState extends State<LoginView> {
                         content: Text('Login berhasil!'),
                         duration: Duration(seconds: 3),
                       ));
+                      NotificationWidget.showNotification(
+                          title: "Notifikasi",
+                          body: 'Ini adalah notifikasi Login!');
                     }
                   }
                   if (cekLogin == false) {
