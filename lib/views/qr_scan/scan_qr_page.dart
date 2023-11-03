@@ -91,9 +91,30 @@ class _BarcodeScannerPageViewState extends State<BarcodeScannerPageView>
     });
   }
 
+  void validateScannedQR(String scannedText) {
+    final String expectedLink = "https://me-qr.com/XzTqjVji";
+
+    if (scannedText == expectedLink) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('QR code Berisi Kupon Salon!'),
+          duration: Duration(seconds: 5),
+        ),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('QR Code yang discanned Invalid!'),
+          duration: Duration(seconds: 5),
+        ),
+      );
+    }
+  }
+
   void getURLResult() {
     final qrCode = barcodeCapture?.barcodes.first.rawValue;
     if (qrCode != null) {
+      validateScannedQR(qrCode);
       copyToClipboard(qrCode);
     }
   }
