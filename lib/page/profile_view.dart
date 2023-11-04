@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ugd6_1217/constant/app_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,11 +22,13 @@ class _ProfileViewState extends State<ProfileView> {
   String email = "";
   String noHp = "";
   String gender = "";
+  String profileImagePath = "";
 
   @override
   void initState() {
     super.initState();
     getUserProfile();
+    getProfileImage();
   }
 
   Future<void> getUserProfile() async {
@@ -35,6 +39,24 @@ class _ProfileViewState extends State<ProfileView> {
       email = prefs.getString('email') ?? "No Email";
       noHp = prefs.getInt('noHp')?.toString() ?? "No Phone Number";
       gender = prefs.getString('gender') ?? "No Gender";
+    });
+  }
+
+  Future<void> getProfileImage() async {
+    final prefs = await SharedPreferences.getInstance();
+    final imagePath = prefs.getString('profileImage');
+    if (imagePath != null && imagePath.isNotEmpty) {
+      setState(() {
+        profileImagePath = imagePath;
+      });
+    }
+  }
+
+  Future<void> setProfileImage(String imagePath) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('profileImage', imagePath);
+    setState(() {
+      profileImagePath = imagePath;
     });
   }
 
@@ -49,18 +71,41 @@ class _ProfileViewState extends State<ProfileView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             InkWell(
-              onTap: () {
+              onTap: () async {
                 // Tambahkan logika yang ingin Anda jalankan saat tombol diklik di sini
                 ProfileView.navigateTo(context, RouteConstant.routeToQrCam);
+                final imagePath = await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => CameraView(),
+                  ),
+                );
+                if (imagePath != null && imagePath.isNotEmpty) {
+                  // Simpan gambar sebagai foto profil
+                  setProfileImage(imagePath);
+                }
               },
               child: CircleAvatar(
                 radius: 50, // Atur sesuai ukuran yang Anda inginkan
-                backgroundColor: Colors.blue, // Atur warna latar belakang sesuai keinginan Anda
-                child: Icon(
-                  Icons.camera_alt, // Gunakan ikon kamera (atau ikon lainnya) di sini
-                  size: 50, // Atur ukuran ikon sesuai keinginan Anda
-                  color: Colors.white, // Atur warna ikon sesuai keinginan Anda
-                ),
+                backgroundColor: Colors
+                    .blue, // Atur warna latar belakang sesuai keinginan Anda
+                child: profileImagePath.isNotEmpty
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(50),
+                        child: Image.file(
+                          File(profileImagePath),
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Icon(
+                        Icons
+                            .camera_alt, // Gunakan ikon kamera (atau ikon lainnya) di sini
+                        size: 50, // Atur ukuran ikon sesuai keinginan Anda
+                        color: Colors
+                            .white, // Atur warna ikon sesuai keinginan Anda
+                      ),
               ),
             ),
             ElevatedButton(
@@ -72,7 +117,7 @@ class _ProfileViewState extends State<ProfileView> {
             Text('Email: $email'),
             Text('Phone Number: $noHp'),
             Text('Gender: $gender'),
-            
+
             // Tambahkan widget lain sesuai kebutuhan
           ],
         ),
