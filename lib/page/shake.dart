@@ -22,7 +22,7 @@ class _ShakeViewState extends State<ShakeView> {
       if (angularVelocity.abs() > threshold) {
         setState(() {
           shakeCounter++;
-          if (shakeCounter >= 30) {
+          if (shakeCounter >= 5) {
             navigateToGoogleMaps();
             shakeCounter = 0; // Reset counter setelah navigasi
           }

@@ -28,7 +28,7 @@ class _DisplayPictureScreenState extends State<DisplayPictureScreen> {
   Widget build(BuildContext context) {
     LoggingUtils.logStartFunction("Build DisplayPictureScreen");
     return Scaffold(
-      appBar: AppBar(title: const Text('DIsplay the Picture')),
+      appBar: AppBar(title: const Text('Display the Picture')),
       body: WillPopScope(
           onWillPop: () async {
             widget.cameraController.resumePreview();
