@@ -6,6 +6,7 @@ import 'package:ugd6_1217/database/sql_helper_product.dart';
 import 'package:ugd6_1217/page/product_input_page.dart';
 import 'package:ugd6_1217/page/profile_view.dart';
 import 'package:ugd6_1217/page/shake.dart';
+import 'package:ugd6_1217/notification_widget.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({super.key});
@@ -109,6 +110,15 @@ class _ProductViewState extends State<ProductView> {
                   onChanged: (value) => refresh(value),
                 ),
               ),
+              ElevatedButton(
+                onPressed: () {
+                  NotificationWidget.showNotification(
+                    title: "Notifikasi",
+                    body: 'Ini adalah notifikasi Login!',
+                  );
+                },
+                child: Text('Tampilkan Notifikasi'),
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: product.length,
@@ -170,7 +180,8 @@ class _ProductViewState extends State<ProductView> {
 
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Product'),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.shopping_cart), label: 'Product'),
           BottomNavigationBarItem(icon: Icon(Icons.vibration), label: 'Shake'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],

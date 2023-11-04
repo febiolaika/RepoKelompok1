@@ -94,7 +94,7 @@ class _LoginViewState extends State<LoginView> {
                         username,
                         password,
                         data[i]['email'],
-                        int.parse(data[i]['noHp']),
+                        data[i]['noHp'],
                         data[i]['gender'],
                       );
                       cekLogin = true;
