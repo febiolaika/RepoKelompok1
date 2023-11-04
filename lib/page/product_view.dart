@@ -5,6 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:ugd6_1217/database/sql_helper_product.dart';
 import 'package:ugd6_1217/page/product_input_page.dart';
 import 'package:ugd6_1217/page/profile_view.dart';
+import 'package:ugd6_1217/page/shake.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({super.key});
@@ -162,14 +163,15 @@ class _ProductViewState extends State<ProductView> {
               ),
             ],
           ),
+          const ShakeView(),
           const ProfileView(),
         ],
       ),
 
       bottomNavigationBar: BottomNavigationBar(
         items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: 'Product'),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: 'Product'),
+          BottomNavigationBarItem(icon: Icon(Icons.vibration), label: 'Shake'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,
