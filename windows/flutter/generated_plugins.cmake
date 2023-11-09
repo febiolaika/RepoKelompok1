@@ -3,7 +3,9 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+  file_selector_windows
   maps_launcher
+  printing
   url_launcher_windows
 )
 

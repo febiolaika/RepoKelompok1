@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:image_picker/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:ugd6_1217/constant/app_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';

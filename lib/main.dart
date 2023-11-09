@@ -10,6 +10,18 @@ void main() {
 }
 
 class MainApp extends StatelessWidget {
+  // Future pickImageC() async {
+  //   try {
+  //     final image = await ImagePicker().pickImage(source: ImageSource.camera);
+
+  //     if (image == null) return;
+  //     final imageTemp = File(image.path);
+  //     setState(() => this.image = imageTemp);
+  //   } on PlatformException catch (e) {
+  //     debugPrint('Failed to pick image : $e');
+  //   }
+  // }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -23,6 +35,18 @@ class MainApp extends StatelessWidget {
         RouteConstant.routeToQrCam: (context) => CameraView(),
         RouteConstant.routeToQrScanPage: (context) => BarcodeScannerPageView(),
         // '/register': (context) => const RegisterView(),
+        // Future pickImage() async {
+        //   try {
+        //     final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+        //     if (image == null) return;
+
+        //     final imageTemp = File(image.path);
+        //     setState(() => this.image = imageTemp);
+        //   } on PlatformException catch (e) {
+        //     debugPrint('Failed to pick image : $e');
+        //   }
+        // }
       },
     );
   }
