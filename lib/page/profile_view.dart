@@ -34,7 +34,6 @@ class _ProfileViewState extends State<ProfileView> {
   Future<void> getUserProfile() async {
     final prefs = await SharedPreferences.getInstance();
     setState(() {
-      // Mengambil data profil pengguna dari Shared Preferences
       username = prefs.getString('username') ?? "No Username";
       email = prefs.getString('email') ?? "No Email";
       noHp = prefs.getInt('noHp')?.toString() ?? "No Phone Number";
@@ -60,6 +59,22 @@ class _ProfileViewState extends State<ProfileView> {
     });
   }
 
+  Future<void> pickImageFromCamera() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+
+    if (pickedFile != null) {
+      setProfileImage(pickedFile.path);
+    }
+  }
+
+  Future<void> pickImageFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setProfileImage(pickedFile.path);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,23 +87,35 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             InkWell(
               onTap: () async {
-                // Tambahkan logika yang ingin Anda jalankan saat tombol diklik di sini
-                ProfileView.navigateTo(context, RouteConstant.routeToQrCam);
-                final imagePath = await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => CameraView(),
-                  ),
+                // Show a dialog to choose the image source
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Choose Image Source"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            pickImageFromCamera();
+                          },
+                          child: Text("Camera"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            pickImageFromGallery();
+                          },
+                          child: Text("Gallery"),
+                        ),
+                      ],
+                    );
+                  },
                 );
-                if (imagePath != null && imagePath.isNotEmpty) {
-                  // Simpan gambar sebagai foto profil
-                  setProfileImage(imagePath);
-                }
               },
               child: CircleAvatar(
-                radius: 50, // Atur sesuai ukuran yang Anda inginkan
-                backgroundColor: Colors
-                    .blue, // Atur warna latar belakang sesuai keinginan Anda
+                radius: 50,
+                backgroundColor: Colors.blue,
                 child: profileImagePath.isNotEmpty
                     ? ClipRRect(
                         borderRadius: BorderRadius.circular(50),
@@ -100,11 +127,9 @@ class _ProfileViewState extends State<ProfileView> {
                         ),
                       )
                     : Icon(
-                        Icons
-                            .camera_alt, // Gunakan ikon kamera (atau ikon lainnya) di sini
-                        size: 50, // Atur ukuran ikon sesuai keinginan Anda
-                        color: Colors
-                            .white, // Atur warna ikon sesuai keinginan Anda
+                        Icons.camera_alt,
+                        size: 50,
+                        color: Colors.white,
                       ),
               ),
             ),
@@ -117,14 +142,13 @@ class _ProfileViewState extends State<ProfileView> {
             Text('Email: $email'),
             Text('Phone Number: $noHp'),
             Text('Gender: $gender'),
-
-            // Tambahkan widget lain sesuai kebutuhan
           ],
         ),
       ),
     );
   }
 }
+
 
 // class ProfileView extends StatefulWidget {
 //   const ProfileView({Key? key}) : super(key: key);
