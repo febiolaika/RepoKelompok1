@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:ugd6_1217/database/sql_helper_product.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:uuid/uuid.dart';
+import 'package:ugd6_1217/pdf_view.dart';
 
 class ProductInput extends StatefulWidget {
   const ProductInput(
@@ -33,6 +35,7 @@ class _ProductInputState extends State<ProductInput> {
   TextEditingController durasiController = TextEditingController();
   TextEditingController gambarController = TextEditingController();
   String dropDown = imageDropdown.first;
+  String idd = const Uuid().v1();
 
   @override
   Widget build(BuildContext context) {
@@ -115,7 +118,9 @@ class _ProductInputState extends State<ProductInput> {
                         Navigator.of(context).pop();
                       }
                     },
-                    child: const Text('Simpan'))
+                    child: const Text('Simpan'),
+                  ),
+                  buttonCreatePDF(context),
               ],
             ),
           ),
@@ -131,5 +136,35 @@ class _ProductInputState extends State<ProductInput> {
       return "Nail Art";
     }
     return value;
+  }
+
+  Container buttonCreatePDF(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: 2.0), // Adjust margin as needed
+      child: ElevatedButton(
+        onPressed: () {
+          createPdf(
+            namaController,
+            hargaController,
+            durasiController,
+            idd,
+            dropDown,
+            context,
+          );
+          setState(() {
+            const uuid = Uuid();
+            idd = uuid.v1();
+          });
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.amber,
+          textStyle: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 15.sp,
+          ),
+        ),
+        child: const Text('Create PDF'),
+      ),
+    );
   }
 }
