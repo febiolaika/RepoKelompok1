@@ -7,6 +7,7 @@ import 'package:ugd6_1217/page/product_input_page.dart';
 import 'package:ugd6_1217/page/profile_view.dart';
 import 'package:ugd6_1217/page/shake.dart';
 import 'package:ugd6_1217/notification_widget.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProductView extends StatefulWidget {
   const ProductView({super.key});
@@ -103,7 +104,7 @@ class _ProductViewState extends State<ProductView> {
           Column(
             children: [
               Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: EdgeInsets.all(2.0.w),
                 child: TextFormField(
                   controller: cariController,
                   decoration: const InputDecoration(labelText: 'Cari Produk'),

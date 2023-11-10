@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ShakeView extends StatefulWidget {
   const ShakeView({Key? key}) : super(key: key);
@@ -33,16 +34,18 @@ class _ShakeViewState extends State<ShakeView> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text("Shake Device"),
+    return ResponsiveSizer(builder: (context, orientation, deviceType) {
+      return MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text("Shake Device"),
+          ),
+          body: Center(
+            child: Text("Shake Count $shakeCounter"),
+          ),
         ),
-        body: Center(
-          child: Text("Shake Count $shakeCounter"),
-        ),
-      ),
-    );
+      );
+    });
   }
 
   void navigateToGoogleMaps() {

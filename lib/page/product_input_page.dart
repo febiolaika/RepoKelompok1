@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:ugd6_1217/database/sql_helper_product.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProductInput extends StatefulWidget {
   const ProductInput(
@@ -45,14 +46,14 @@ class _ProductInputState extends State<ProductInput> {
         child: Form(
           key: formKey,
           child: Padding(
-            padding: const EdgeInsets.all(20.0),
+            padding: EdgeInsets.all(2.0.h),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Image.asset(
                   dropDown,
-                  width: 200,
-                  height: 150,
+                  width: 20.0.w,
+                  height: 15.0.h,
                 ),
                 Row(
                   children: [
@@ -93,7 +94,7 @@ class _ProductInputState extends State<ProductInput> {
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: 'Durasi'),
                 ),
-                const SizedBox(height: 20),
+                SizedBox(height: 2.0.h),
                 ElevatedButton(
                     onPressed: () async {
                       if (formKey.currentState!.validate()) {
