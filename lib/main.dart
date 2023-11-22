@@ -5,9 +5,10 @@ import 'package:ugd6_1217/page/product_view.dart';
 import 'package:ugd6_1217/views/camera/camera.dart';
 import 'package:ugd6_1217/views/qr_scan/scan_qr_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(ProviderScope(child: const MyApp()));
 }
 
 class MainApp extends StatelessWidget {
