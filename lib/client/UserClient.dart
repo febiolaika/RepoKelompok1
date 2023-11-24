@@ -1,4 +1,6 @@
-import 'package:ugd6_1217/entity/user.dart';
+// ignore_for_file: non_constant_identifier_names
+
+import 'package:ugd_api_1/entity/User.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart';
@@ -7,8 +9,8 @@ class UserClient {
   //sesuaikan url dan endpoint dengan device yang kalian gunakan untuk uji coba sesuai langkah 7
 
   // untuk emulator
-  static final String url = '10.0.2.2:8000'; //base url
-  static final String endpoint = '/api/User'; // base endpoint
+  static String url = '10.0.2.2:8000'; //base url
+  static String endpoint = '/api/user'; // base endpoint
 
   // untuk hp
   // static final String url = '192.168.0.105';
@@ -47,12 +49,12 @@ class UserClient {
   }
 
   // membuat data User baru
-  static Future<Response> create(User User) async {
+  static Future<Response> create(User user) async {
     try {
       var response = await post(Uri.http(url, endpoint),
           headers: {"Content-Type": "application/json"},
-          body: User.toRawJson());
-
+          body: user.toRawJson());
+      print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
       return response;
@@ -62,11 +64,11 @@ class UserClient {
   }
 
   // mengubah data User sesuai id
-  static Future<Response> update(User User) async {
+  static Future<Response> update(User user) async {
     try {
-      var response = await put(Uri.http(url, '$endpoint/${User.id}'),
+      var response = await put(Uri.http(url, '$endpoint/${user.id}'),
           headers: {"Content-Type": "application/json"},
-          body: User.toRawJson());
+          body: user.toRawJson());
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
