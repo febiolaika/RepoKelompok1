@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:ugd_api_1/pages/RegisterPage.dart';
+import 'package:ugd6_1217/page/RegisterPage.dart';
 import 'package:http/http.dart' as http;
 
 class LoginView extends StatefulWidget {

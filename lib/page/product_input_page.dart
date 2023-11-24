@@ -1,7 +1,6 @@
 // ignore_for_file: avoid_print
 
 import 'package:flutter/material.dart';
-import 'package:ugd6_1217/database/sql_helper_product.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:uuid/uuid.dart';
 import 'package:ugd6_1217/pdf_view.dart';
@@ -99,28 +98,28 @@ class _ProductInputState extends State<ProductInput> {
                 ),
                 SizedBox(height: 2.0.h),
                 ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState!.validate()) {
-                        if (widget.id == null) {
-                          SQLHelperProduct.addProduct(
-                              namaController.text,
-                              double.parse(hargaController.text),
-                              int.parse(durasiController.text),
-                              gambarController.text);
-                        } else {
-                          SQLHelperProduct.editProduct(
-                              widget.id!,
-                              namaController.text,
-                              double.parse(hargaController.text),
-                              int.parse(durasiController.text),
-                              gambarController.text);
-                        }
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: const Text('Simpan'),
-                  ),
-                  buttonCreatePDF(context),
+                  onPressed: () async {
+                    if (formKey.currentState!.validate()) {
+                      // if (widget.id == null) {
+                      //   SQLHelperProduct.addProduct(
+                      //       namaController.text,
+                      //       double.parse(hargaController.text),
+                      //       int.parse(durasiController.text),
+                      //       gambarController.text);
+                      // } else {
+                      //   SQLHelperProduct.editProduct(
+                      //       widget.id!,
+                      //       namaController.text,
+                      //       double.parse(hargaController.text),
+                      //       int.parse(durasiController.text),
+                      //       gambarController.text);
+                      // }
+                      Navigator.of(context).pop();
+                    }
+                  },
+                  child: const Text('Simpan'),
+                ),
+                buttonCreatePDF(context),
               ],
             ),
           ),

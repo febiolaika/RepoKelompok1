@@ -1,6 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:ugd_api_1/entity/User.dart';
+import 'package:ugd6_1217/entity/User.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart';

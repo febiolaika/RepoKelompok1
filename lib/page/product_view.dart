@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:ugd6_1217/database/sql_helper_product.dart';
 import 'package:ugd6_1217/page/product_input_page.dart';
 import 'package:ugd6_1217/page/profile_view.dart';
 import 'package:ugd6_1217/page/shake.dart';
@@ -39,7 +38,7 @@ class _ProductViewState extends State<ProductView> {
                   gambar: null,
                 ),
               ),
-            ).then((value) => refresh(''));
+            ).then((value) {});
           },
           child: const Icon(Icons.add),
         ));
@@ -61,18 +60,9 @@ class _ProductViewState extends State<ProductView> {
 
   List<Map<String, dynamic>> product = [];
   TextEditingController cariController = TextEditingController();
-  void refresh(String cari) async {
-    final data = await SQLHelperProduct.getProduct(cari);
-    if (mounted) {
-      setState(() {
-        product = data;
-      });
-    }
-  }
 
   @override
   void initState() {
-    refresh('');
     _setFloatingActionButton(FloatingActionButton(
       onPressed: () {
         Navigator.push(
@@ -87,7 +77,7 @@ class _ProductViewState extends State<ProductView> {
               gambar: null,
             ),
           ),
-        ).then((value) => refresh(''));
+        ).then((value) {});
       },
       child: const Icon(Icons.add),
     ));
@@ -108,7 +98,7 @@ class _ProductViewState extends State<ProductView> {
                 child: TextFormField(
                   controller: cariController,
                   decoration: const InputDecoration(labelText: 'Cari Produk'),
-                  onChanged: (value) => refresh(value),
+                  onChanged: (value) {},
                 ),
               ),
               ElevatedButton(
@@ -155,17 +145,14 @@ class _ProductViewState extends State<ProductView> {
                                   gambar: product[index]['gambar'],
                                 ),
                               ),
-                            ).then((_) => refresh(''));
+                            ).then((_) {});
                           },
                         ),
                         IconSlideAction(
                           caption: 'Delete',
                           color: Colors.red,
                           icon: Icons.delete,
-                          onTap: () async {
-                            await deleteProduct(product[index]['id'])
-                                .then((_) => refresh(''));
-                          },
+                          onTap: () async {},
                         ),
                       ],
                     );
@@ -205,9 +192,5 @@ class _ProductViewState extends State<ProductView> {
       //   onTap: _onItemTapped,
       // ),
     );
-  }
-
-  Future<void> deleteProduct(int id) async {
-    await SQLHelperProduct.deleteProduct(id);
   }
 }
