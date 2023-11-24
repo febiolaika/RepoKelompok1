@@ -9,11 +9,17 @@ class Userpage extends ConsumerWidget {
 
   //provider untuk mengambil list data User dari API
   final listUserProvider = FutureProvider<List<User>>((ref) async {
-    return await User.fetchAll();
+    return await UserClient.fetchAll();
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var listener = ref.watch(listUserProvider);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Data User"),
+      ),
+    );
   }
 }
