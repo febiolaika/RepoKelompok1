@@ -161,6 +161,11 @@ class _RegisterViewState extends State<RegisterView> {
                           if (response.statusCode == 201 ||
                               response.statusCode == 200) {
                             // Data tersimpan dengan sukses
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Registrasi Berhasil'),
+                              ),
+                            );
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => LoginView(),

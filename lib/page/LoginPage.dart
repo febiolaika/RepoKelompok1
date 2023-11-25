@@ -5,7 +5,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
 import 'package:ugd6_1217/page/RegisterPage.dart';
 import 'package:http/http.dart' as http;
-import 'package:ugd6_1217/notification_widget.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -88,10 +87,10 @@ class _LoginViewState extends State<LoginView> {
                               builder: (context) => ProductView(), // Replace YourNextScreen with the actual screen you want to navigate to
                             ),
                           );
-                          NotificationWidget.showNotification(
-                            title: "Notifikasi",
-                            body: 'Selamat Datang Kembali!');
-                          // Lakukan navigasi atau tindakan lain yang diperlukan
+                          // NotificationWidget.showNotification(
+                          //   title: "Notifikasi",
+                          //   body: 'Selamat Datang Kembali!');
+                          // // Lakukan navigasi atau tindakan lain yang diperlukan
                         } else {
                           // Login gagal
                           showDialog(
