@@ -3,10 +3,10 @@
 
 // import 'package:ugd_api_1/client/UserClient.dart';
 // import 'package:ugd_api_1/entity/User.dart';
-// // import 'package:ugd_api_1/pages/EditUser.dart';
+// // import 'package:ugd_api_1/pages/EditProduk.dart';
 
-// class Homepage extends ConsumerWidget {
-//   Homepage({super.key});
+// class HomePage extends ConsumerWidget {
+//   HomePage({super.key});
 
 //   final listUserProvider = FutureProvider<List<User>>((ref) async {
 //     return await UserClient.fetchAll();
@@ -14,8 +14,8 @@
 
 //   void onAdd(context, ref) {
 //     Navigator.push(context,
-//             MaterialPageRoute(builder: (context) => const EditUser()))
-//         .then((value) => ref.refresh(listUserProvider));
+//             MaterialPageRoute(builder: (context) => const EditProduct()))
+//         .then((value) => ref.refresh(listProductProvider));
 //   }
 
 //   void onDelete(id, context, ref) async {
@@ -52,10 +52,10 @@
 //         onPressed: () => onAdd(context, ref),
 //       ),
 //       body: listener.when(
-//         data: (Users) => SingleChildScrollView(
+//         data: (products) => SingleChildScrollView(
 //           child: Column(
-//               children: Users
-//                   .map((User) => scrollViewItem(User, context, ref))
+//               children: productss
+//                   .map((product) => scrollViewItem(product, context, ref))
 //                   .toList()),
 //         ),
 //         error: (err, s) => Center(child: Text(err.toString())),

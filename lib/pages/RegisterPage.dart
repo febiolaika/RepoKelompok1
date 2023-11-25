@@ -144,38 +144,44 @@ class _RegisterViewState extends State<RegisterView> {
                   ),
                   SizedBox(height: 2.0.h),
                   ElevatedButton(
-  child: Text('Daftar'),
-  onPressed: () async {
-    if (_formKey.currentState!.validate()) {
-      User newUser = User(
-        id: 0,
-        username: _nameController.text,
-        password: _passwordController.text,
-        email: _emailController.text,
-        noHp: _noHpController.text,
-        gender: _genderController.text,
-      );
-      try {
-        var response = await UserClient.create(newUser);
+                    child: Text('Daftar'),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        User newUser = User(
+                          id: 0,
+                          username: _nameController.text,
+                          password: _passwordController.text,
+                          email: _emailController.text,
+                          noHp: _noHpController.text,
+                          gender: _genderController.text,
+                        );
+                        try {
+                          var response = await UserClient.create(newUser);
 
-        if (response.statusCode == 201 || response.statusCode == 200) {
-          // Data tersimpan dengan sukses
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (context) => LoginView(),
-            ),
-          );
-        } else {
-          // Handle status code selain 201 atau 200
-          print('Gagal menyimpan data, status code: ${response.statusCode}');
-        }
-      } catch (e) {
-        print('Registrasi gagal: $e');
-      }
-    }
-  },
-),
-
+                          if (response.statusCode == 201 ||
+                              response.statusCode == 200) {
+                            // Data tersimpan dengan sukses
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Registrasi Berhasil'),
+                              ),
+                            );
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => LoginView(),
+                              ),
+                            );
+                          } else {
+                            // Handle status code selain 201 atau 200
+                            print(
+                                'Gagal menyimpan data, status code: ${response.statusCode}');
+                          }
+                        } catch (e) {
+                          print('Registrasi gagal: $e');
+                        }
+                      }
+                    },
+                  ),
                 ],
               ),
             )),

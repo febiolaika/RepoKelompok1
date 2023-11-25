@@ -79,15 +79,38 @@ class UserClient {
   }
 
   // mneghapus data User sesuai ID
-  static Future<Response> destroy(id) async {
+  // static Future<Response> destroy(id) async {
+  //   try {
+  //     var response = await delete(Uri.http(url, '$endpoint/$id'));
+
+  //     if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+  //     return response;
+  //   } catch (e) {
+  //     return Future.error(e.toString());
+  //   }
+  // }
+
+  //login
+  static Future<bool> login(String username, String password) async {
     try {
-      var response = await delete(Uri.http(url, '$endpoint/$id'));
+      var response = await post(
+        Uri.http(
+            url, '/api/login'), // Sesuaikan dengan endpoint login pada API Anda
+        body: {'username': username, 'password': password},
+      );
 
-      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-
-      return response;
+      if (response.statusCode == 200) {
+        // Jika respons status code adalah 200, artinya login berhasil
+        return true;
+      } else {
+        // Jika respons status code tidak 200, artinya login gagal
+        return false;
+      }
     } catch (e) {
-      return Future.error(e.toString());
+      // Tangani kesalahan yang mungkin terjadi selama proses login
+      print('Error during login: $e');
+      return false;
     }
   }
 }

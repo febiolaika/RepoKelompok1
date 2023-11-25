@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd_api_1/pages/RegisterPage.dart';
-import 'package:http/http.dart' as http;
+import 'package:ugd_api_1/client/UserClient.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -69,17 +69,10 @@ class _LoginViewState extends State<LoginView> {
                       final username = _usernameController.text;
                       final password = _passwordController.text;
 
-                      try {
-                        // Kirim permintaan ke endpoint login
-                        final response = await http.post(
-                          Uri.parse('http://10.0.2.2:8000/login'),
-                          body: {'username': username, 'password': password},
-                        );
+                      bool loginSuccess = await UserClient.login(username, password);
 
-                        // Periksa respons dari server
-                        if (response.statusCode == 200) {
+                        if (loginSuccess) {
                           print('Login berhasil');
-                          // Login berhasil
                           // Lakukan navigasi atau tindakan lain yang diperlukan
                         } else {
                           // Login gagal
@@ -102,9 +95,6 @@ class _LoginViewState extends State<LoginView> {
                             },
                           );
                         }
-                      } catch (e) {
-                        print('Error during login: $e');
-                      }
                     },
                     child: const Text('Login')),
                 Row(
