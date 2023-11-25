@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:barcode_widget/barcode_widget.dart';
 import 'package:ugd6_1217/preview_screen.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:ugd6_1217/entity/product.dart';
+import 'package:ugd6_1217/entity/Product.dart';
 import 'package:ugd6_1217/page/product_input_page.dart';
 
 Future<void> createPdf(

@@ -1,13 +1,32 @@
+import 'dart:convert';
+
 class Product {
-  final int? id;
-  final String? nama;
-  final double? harga;
-  final int? durasi;
+  int id;
+  String nama;
+  double harga;
+  int durasi;
 
-  Product({this.nama, this.harga, this.durasi, this.id});
+  Product(
+      {required this.id,
+      required this.nama,
+      required this.harga,
+      required this.durasi});
 
-  @override
-  String toString() {
-    return 'Produk{name: $nama}';
-  }
+      //untuk membuat objek barang dari data json yang diterima dari API
+      factory Product.fromRawJson(String str) => Product.fromRawJson(json.decode(str));
+      factory Product.fromJson(Map<String, dynamic> json) => Product(
+            id: json["id"],
+            nama: json["nama"],
+            harga: json["harga"],
+            durasi: json["durasi"],
+      );
+
+      //untuk membuat data json dari objek barang yang dikirim ke API
+      String toRawJson() => json.encode(toJson());
+      Map<String, dynamic> toJson() => {
+            "id": id,
+            "nama": nama,
+            "harga": harga,
+            "durasi": durasi,
+      };
 }

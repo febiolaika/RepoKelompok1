@@ -148,7 +148,7 @@ class _RegisterViewState extends State<RegisterView> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         User newUser = User(
-                          id: 0,
+                          id: widget.id ?? 0,
                           username: _nameController.text,
                           password: _passwordController.text,
                           email: _emailController.text,
