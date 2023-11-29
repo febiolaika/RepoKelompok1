@@ -3,7 +3,7 @@
 import 'package:ugd6_1217/entity/User.dart';
 
 import 'dart:convert';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 class UserClient {
   //sesuaikan url dan endpoint dengan device yang kalian gunakan untuk uji coba sesuai langkah 7
@@ -19,7 +19,7 @@ class UserClient {
   // mengambil semua data User dari API
   static Future<List<User>> fetchAll() async {
     try {
-      var response = await get(
+      var response = await http.get(
           Uri.http(url, endpoint)); // request ke api dan menyimpan responsenya
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
@@ -37,7 +37,8 @@ class UserClient {
   // mengambil data User dari API sesuai id
   static Future<User> find(id) async {
     try {
-      var response = await get(Uri.http(url, '$endpoint/$id')); //request ke api
+      var response =
+          await http.get(Uri.http(url, '$endpoint/$id')); //request ke api
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
@@ -49,9 +50,9 @@ class UserClient {
   }
 
   // membuat data User baru
-  static Future<Response> create(User user) async {
+  static Future<http.Response> create(User user) async {
     try {
-      var response = await post(Uri.http(url, endpoint),
+      var response = await http.post(Uri.http(url, endpoint),
           headers: {"Content-Type": "application/json"},
           body: user.toRawJson());
       print(response.body);
@@ -64,9 +65,9 @@ class UserClient {
   }
 
   // mengubah data User sesuai id
-  static Future<Response> update(User user) async {
+  static Future<http.Response> update(User user) async {
     try {
-      var response = await put(Uri.http(url, '$endpoint/${user.id}'),
+      var response = await http.put(Uri.http(url, '$endpoint/${user.id}'),
           headers: {"Content-Type": "application/json"},
           body: user.toRawJson());
 
@@ -79,15 +80,36 @@ class UserClient {
   }
 
   // mneghapus data User sesuai ID
-  static Future<Response> destroy(id) async {
+  static Future<http.Response> destroy(id) async {
     try {
-      var response = await delete(Uri.http(url, '$endpoint/$id'));
+      var response = await http.delete(Uri.http(url, '$endpoint/$id'));
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
       return response;
     } catch (e) {
       return Future.error(e.toString());
+    }
+  }
+
+  static Future<User?> logintesting({
+    required String username,
+    required String password,
+  }) async {
+    String apiURL = 'http://127.0.0.1:8000/api/login';
+    try {
+      var apiResult = await http.post(
+        Uri.parse(apiURL),
+        body: {'username': username, 'password': password},
+      );
+      if (apiResult.statusCode == 200) {
+        final result = User.fromRawJson(apiResult.body);
+        return result;
+      } else {
+        throw Exception('Failed to login');
+      }
+    } catch (e) {
+      return null;
     }
   }
 }
