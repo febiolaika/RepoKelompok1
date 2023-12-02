@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:ugd6_1217/client/ProductClient.dart';
-import 'package:ugd6_1217/entity/Product.dart';
+import 'package:ugd6_1217/entity/product.dart';
 import 'package:ugd6_1217/page/ProductPage.dart';
 import 'package:ugd6_1217/page/shake.dart';
 import 'package:ugd6_1217/page/Userpage.dart';
@@ -20,7 +20,7 @@ class ProductView extends ConsumerWidget {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => 
+            builder: (context) =>
                 const ProductPage())).then((value) => ref.refresh(
         listProductProvider)); //refresh list data barang ketika kembali ke halaman ini
   }
@@ -42,13 +42,16 @@ class ProductView extends ConsumerWidget {
       subtitle: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Harga: ${product.harga.toStringAsFixed(2)}"), // Convert double to String
-            Text("Durasi: ${product.durasi.toString()}"),
-          ],
-        ),
-      onTap: () => Navigator.push(context,
-              MaterialPageRoute(builder: (context) => ProductPage(id: product.id)))
+        children: [
+          Text(
+              "Harga: ${product.harga.toStringAsFixed(2)}"), // Convert double to String
+          Text("Durasi: ${product.durasi.toString()}"),
+        ],
+      ),
+      onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ProductPage(id: product.id)))
           .then((value) => ref.refresh(listProductProvider)),
       trailing: IconButton(
           onPressed: () => onDelete(product.id, context, ref),
@@ -57,7 +60,7 @@ class ProductView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var listener = ref.watch(listProductProvider);
-    
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Product"),
@@ -79,7 +82,7 @@ class ProductView extends ConsumerWidget {
           child: CircularProgressIndicator(),
         ),
       ),
-       bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.shopping_cart),
@@ -103,7 +106,7 @@ class ProductView extends ConsumerWidget {
               // Navigate to the product page
               break;
             case 1:
-               Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => ShakeView(),
@@ -111,7 +114,7 @@ class ProductView extends ConsumerWidget {
               );
               break;
             case 2:
-               Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Userpage(),
@@ -120,20 +123,20 @@ class ProductView extends ConsumerWidget {
               break;
           }
         },
-       ),
-    ); 
+      ),
+    );
   }
 }
 
 // untuk menampilkan snackbar
-  void showSnackBar(BuildContext context, String msg, Color bg) {
-    final Scaffold = ScaffoldMessenger.of(context);
-    Scaffold.showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        backgroundColor: bg,
-        action: SnackBarAction(
-            label: 'hide', onPressed: Scaffold.hideCurrentSnackBar),
-      ),
-    );
-  }
+void showSnackBar(BuildContext context, String msg, Color bg) {
+  final Scaffold = ScaffoldMessenger.of(context);
+  Scaffold.showSnackBar(
+    SnackBar(
+      content: Text(msg),
+      backgroundColor: bg,
+      action: SnackBarAction(
+          label: 'hide', onPressed: Scaffold.hideCurrentSnackBar),
+    ),
+  );
+}

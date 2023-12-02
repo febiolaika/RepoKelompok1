@@ -2,14 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:ugd6_1217/client/ProductClient.dart';
 
 void main() {
-  test('login success', () async {
-    final hasil = await ProductClient.productTesting(
-        nama: 'david', harga: 2000, durasi: 20);
-    expect(hasil?.data.nama, equals('david'));
-    expect(
-        double.parse(hasil?.data.harga), greaterThan(0)); // Matcher for 'harga'
-    expect(
-        int.parse(hasil?.data.durasi), greaterThan(0)); // Matcher for 'durasi'
+  test('input success', () async {
+    final hasil =
+        await ProductClient.productTesting(nama: 'xxx', harga: 200, durasi: 20);
+    expect(hasil?.data.nama, equals('xxx'));
+    expect(hasil?.data.harga, equals(200)); // Matcher for 'harga'
+    expect(hasil?.data.harga, equals(20)); // Matcher for 'durasi'
   });
 
   test('login failed', () async {

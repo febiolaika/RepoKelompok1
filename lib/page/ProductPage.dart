@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:ugd6_1217/client/ProductClient.dart';
-import 'package:ugd6_1217/entity/Product.dart';
+import 'package:ugd6_1217/entity/product.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
 
 class ProductPage extends StatefulWidget {
@@ -55,10 +55,12 @@ class _ProductPageState extends State<ProductPage> {
 
       //objek barang berdasarkan input
       Product input = Product(
-          id: widget.id ?? 0,
-          nama: namaController.text,
-          harga: double.parse(hargaController.text),
-          durasi: int.parse(durasiController.text),);
+        id: widget.id ?? 0,
+        nama: namaController.text,
+        harga: double.parse(hargaController.text),
+        durasi: int.parse(durasiController.text),
+        data: null,
+      );
 
       try {
         if (widget.id == null) {
@@ -84,65 +86,65 @@ class _ProductPageState extends State<ProductPage> {
         child: isLoading
             ? const Center(
                 child: CircularProgressIndicator(),
-            )
-          : Form(
-              key: _formKey,
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 10),
-                    child: TextFormField(
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Masukkan nama',
-                      ),
-                      controller: namaController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Field Required';
-                        }
-                        return null;
-                      },
-                    ),
-                  ),
-                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 10),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Masukkan Harga',
-                      ),
-                      controller: hargaController,
-                    ),
-                  ),
-                   Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 10),
-                    child: TextFormField(
-                      keyboardType: TextInputType.number,
-                      decoration: const InputDecoration(
-                        border: UnderlineInputBorder(),
-                        labelText: 'Masukkan Durasi',
-                      ),
-                      controller: durasiController,
-                    ),
-                  ),
-                  Container(
-                    width:  double.infinity,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 25, vertical: 10),
-                    child: ElevatedButton(
-                      onPressed: onSubmit,
-                      child: Text(
-                        widget.id == null ? 'Tambah' : 'Edit',
+              )
+            : Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Masukkan nama',
+                        ),
+                        controller: namaController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Field Required';
+                          }
+                          return null;
+                        },
                       ),
                     ),
-                  )
-                ],
-              )),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Masukkan Harga',
+                        ),
+                        controller: hargaController,
+                      ),
+                    ),
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
+                      child: TextFormField(
+                        keyboardType: TextInputType.number,
+                        decoration: const InputDecoration(
+                          border: UnderlineInputBorder(),
+                          labelText: 'Masukkan Durasi',
+                        ),
+                        controller: durasiController,
+                      ),
+                    ),
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
+                      child: ElevatedButton(
+                        onPressed: onSubmit,
+                        child: Text(
+                          widget.id == null ? 'Tambah' : 'Edit',
+                        ),
+                      ),
+                    )
+                  ],
+                )),
       ),
     );
   }
