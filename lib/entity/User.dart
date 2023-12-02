@@ -36,6 +36,7 @@ class User {
   String password;
   String noHp;
   String gender;
+  dynamic data;
 
   User(
       {required this.id,
@@ -43,7 +44,8 @@ class User {
       required this.email,
       required this.password,
       required this.noHp,
-      required this.gender});
+      required this.gender,
+      required this.data});
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -53,6 +55,7 @@ class User {
         password: json["password"],
         noHp: json["noHp"],
         gender: json["gender"],
+        data: json["data"],
       );
 
   String toRawJson() => json.encode(toJson());
@@ -63,5 +66,6 @@ class User {
         "password": password,
         "noHp": noHp,
         "gender": gender,
+        "data": data,
       };
 }

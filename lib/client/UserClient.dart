@@ -11,7 +11,27 @@ class UserClient {
   // untuk emulator
   static String url = '10.0.2.2:8000'; //base url
   static String endpoint = '/api/user'; // base endpoint
+  static http.Client client = http.Client();
 
+  static Future<LoginModel?> login(
+      {required String username,
+      required String password,
+      required http.Client client}) async {
+    String apiURL = 'http://10.0.2.2:8000/api/login';
+    try {
+      var apiResult = await client.post(
+        Uri.parse(apiURL),
+        body: {'username': username, 'password': password},
+      );
+      if (apiResult.statusCode == 200) {
+        return LoginModel.fromRawJson(apiResult.body);
+      } else {
+        throw Exception('Failed to login');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
   // untuk hp
   // static final String url = '192.168.0.105';
   // static final String endpoint = '/GD_API_1097/public/api/User';

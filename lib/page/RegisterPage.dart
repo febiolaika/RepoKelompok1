@@ -154,6 +154,7 @@ class _RegisterViewState extends State<RegisterView> {
                           email: _emailController.text,
                           noHp: _noHpController.text,
                           gender: _genderController.text,
+                          data: null,
                         );
                         try {
                           var response = await UserClient.create(newUser);

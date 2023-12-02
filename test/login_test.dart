@@ -3,11 +3,10 @@ import 'package:ugd6_1217/client/UserClient.dart';
 
 void main() {
   test('login success', () async {
-    final hasil = await UserClient.logintesting(
-        username: 'David_11097', password: 'd_1097');
-    expect(hasil?., matcher)
-    expect(hasil?.data.username, equals('David_11097'));
-    expect(hasil?.data.password, equals('d_1097'));
+    final hasil =
+        await UserClient.logintesting(username: 'david', password: 'david123');
+    expect(hasil?.data.username, equals('david'));
+    expect(hasil?.data.password, equals('david123'));
   });
 
   test('login failed', () async {
