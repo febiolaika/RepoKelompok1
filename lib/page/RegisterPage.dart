@@ -154,10 +154,7 @@ class _RegisterViewState extends State<RegisterView> {
                           email: _emailController.text,
                           noHp: _noHpController.text,
                           gender: _genderController.text,
-<<<<<<< HEAD:lib/pages/RegisterPage.dart
-=======
                           data: null,
->>>>>>> 78201fcb47e3a6156e4b88d4db949d0064e374b2:lib/page/RegisterPage.dart
                         );
                         try {
                           var response = await UserClient.create(newUser);

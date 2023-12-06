@@ -1,9 +1,40 @@
+// ignore_for_file: file_names
+
 import 'dart:convert';
+
+class ProductModel {
+  final int status;
+  final String message;
+  final Product data;
+
+  const ProductModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
+
+  factory ProductModel.fromRawJson(String str) =>
+      ProductModel.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
+        status: json["status"],
+        message: json["message"],
+        data: Product.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data.toJson(),
+      };
+}
 
 class Product {
   int id;
   String nama;
-  String harga;
+  double harga;
   int durasi;
   dynamic data;
 
@@ -25,7 +56,7 @@ class Product {
         data: json["data"],
       );
 
-  //untuk membuat data json dari objek barang yang dikirim ke API
+//untuk membuat data json dari objek barang yang dikirim ke API
   String toRawJson() => json.encode(toJson());
   Map<String, dynamic> toJson() => {
         "id": id,

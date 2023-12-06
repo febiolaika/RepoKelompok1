@@ -68,11 +68,13 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 SizedBox(height: 2.0.h),
                 ElevatedButton(
+                    child: const Text('Login'),
                     onPressed: () async {
                       final username = _usernameController.text;
                       final password = _passwordController.text;
 
-                      bool loginSuccess = await UserClient.login(username, password);
+                      bool loginSuccess =
+                          await UserClient.login(username, password);
                       try {
                         // Kirim permintaan ke endpoint login
                         final response = await http.post(
@@ -87,7 +89,8 @@ class _LoginViewState extends State<LoginView> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ProductView(), // Replace YourNextScreen with the actual screen you want to navigate to
+                              builder: (context) =>
+                                  ProductView(), // Replace YourNextScreen with the actual screen you want to navigate to
                             ),
                           );
                           // NotificationWidget.showNotification(
@@ -115,8 +118,10 @@ class _LoginViewState extends State<LoginView> {
                             },
                           );
                         }
-                    },
-                    child: const Text('Login')),
+                      } catch (Exception) {
+                        e.toString();
+                      }
+                    }),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
