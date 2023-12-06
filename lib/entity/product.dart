@@ -1,34 +1,5 @@
 import 'dart:convert';
 
-class ProductModel {
-  final int status;
-  final String message;
-  final Product data;
-
-  const ProductModel({
-    required this.status,
-    required this.message,
-    required this.data,
-  });
-
-  factory ProductModel.fromRawJson(String str) =>
-      ProductModel.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-        status: json["status"],
-        message: json["message"],
-        data: Product.fromJson(json["data"]),
-      );
-
-  Map<String, dynamic> toJson() => {
-        "status": status,
-        "message": message,
-        "data": data.toJson(),
-      };
-}
-
 class Product {
   int id;
   String nama;

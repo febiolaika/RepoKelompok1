@@ -100,7 +100,6 @@ class UserClient {
   }
 
   // mneghapus data User sesuai ID
-<<<<<<< HEAD
   // static Future<Response> destroy(id) async {
   //   try {
   //     var response = await delete(Uri.http(url, '$endpoint/$id'));
@@ -114,32 +113,27 @@ class UserClient {
   // }
 
   //login
-  static Future<bool> login(String username, String password) async {
-    try {
-      var response = await post(
-        Uri.http(
-            url, '/api/login'), // Sesuaikan dengan endpoint login pada API Anda
-        body: {'username': username, 'password': password},
-      );
-=======
-  static Future<http.Response> destroy(id) async {
-    try {
-      var response = await http.delete(Uri.http(url, '$endpoint/$id'));
->>>>>>> 78201fcb47e3a6156e4b88d4db949d0064e374b2
+  // static Future<bool> login(String username, String password) async {
+  //   try {
+  //     var response = await post(
+  //       Uri.http(
+  //           url, '/api/login'), // Sesuaikan dengan endpoint login pada API Anda
+  //       body: {'username': username, 'password': password},
+  //     );
 
-      if (response.statusCode == 200) {
-        // Jika respons status code adalah 200, artinya login berhasil
-        return true;
-      } else {
-        // Jika respons status code tidak 200, artinya login gagal
-        return false;
-      }
-    } catch (e) {
-      // Tangani kesalahan yang mungkin terjadi selama proses login
-      print('Error during login: $e');
-      return false;
-    }
-  }
+  //     if (response.statusCode == 200) {
+  //       // Jika respons status code adalah 200, artinya login berhasil
+  //       return true;
+  //     } else {
+  //       // Jika respons status code tidak 200, artinya login gagal
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     // Tangani kesalahan yang mungkin terjadi selama proses login
+  //     print('Error during login: $e');
+  //     return false;
+  //   }
+  // }
 
   static Future<User?> logintesting({
     required String username,
