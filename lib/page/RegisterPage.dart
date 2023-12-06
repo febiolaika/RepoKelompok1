@@ -148,11 +148,7 @@ class _RegisterViewState extends State<RegisterView> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         User newUser = User(
-<<<<<<< HEAD:lib/pages/RegisterPage.dart
-                          id: 0,
-=======
                           id: widget.id ?? 0,
->>>>>>> 78201fcb47e3a6156e4b88d4db949d0064e374b2:lib/page/RegisterPage.dart
                           username: _nameController.text,
                           password: _passwordController.text,
                           email: _emailController.text,

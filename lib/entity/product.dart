@@ -3,7 +3,7 @@ import 'dart:convert';
 class Product {
   int id;
   String nama;
-  double harga;
+  String harga;
   int durasi;
   dynamic data;
 

@@ -2,14 +2,11 @@
 
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-<<<<<<< HEAD:lib/pages/LoginPage.dart
-import 'package:ugd_api_1/pages/RegisterPage.dart';
-import 'package:ugd_api_1/client/UserClient.dart';
-=======
+import 'package:ugd6_1217/page/RegisterPage.dart';
+import 'package:ugd6_1217/client/UserClient.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
 import 'package:ugd6_1217/page/RegisterPage.dart';
 import 'package:http/http.dart' as http;
->>>>>>> 78201fcb47e3a6156e4b88d4db949d0064e374b2:lib/page/LoginPage.dart
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -75,22 +72,17 @@ class _LoginViewState extends State<LoginView> {
                       final username = _usernameController.text;
                       final password = _passwordController.text;
 
-<<<<<<< HEAD:lib/pages/LoginPage.dart
                       bool loginSuccess = await UserClient.login(username, password);
-=======
                       try {
                         // Kirim permintaan ke endpoint login
                         final response = await http.post(
                           Uri.parse('http://10.0.2.2:8000/api/login'),
                           body: {'username': username, 'password': password},
                         );
->>>>>>> 78201fcb47e3a6156e4b88d4db949d0064e374b2:lib/page/LoginPage.dart
 
                         if (loginSuccess) {
                           print('Login berhasil');
-<<<<<<< HEAD:lib/pages/LoginPage.dart
                           // Lakukan navigasi atau tindakan lain yang diperlukan
-=======
                           // Login berhasil
                           Navigator.pushReplacement(
                             context,
@@ -102,7 +94,6 @@ class _LoginViewState extends State<LoginView> {
                           //   title: "Notifikasi",
                           //   body: 'Selamat Datang Kembali!');
                           // // Lakukan navigasi atau tindakan lain yang diperlukan
->>>>>>> 78201fcb47e3a6156e4b88d4db949d0064e374b2:lib/page/LoginPage.dart
                         } else {
                           // Login gagal
                           showDialog(
