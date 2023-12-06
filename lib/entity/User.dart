@@ -1,5 +1,34 @@
 import 'dart:convert';
 
+class LoginModel {
+  final int status;
+  final String message;
+  final User data;
+
+  const LoginModel({
+    required this.status,
+    required this.message,
+    required this.data,
+  });
+
+  factory LoginModel.fromRawJson(String str) =>
+      LoginModel.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
+        status: json["status"],
+        message: json["message"],
+        data: User.fromJson(json["data"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "status": status,
+        "message": message,
+        "data": data.toJson(),
+      };
+}
+
 class User {
   int id;
   String username;
@@ -7,6 +36,7 @@ class User {
   String password;
   String noHp;
   String gender;
+  dynamic data;
 
   User(
       {required this.id,
@@ -14,7 +44,8 @@ class User {
       required this.email,
       required this.password,
       required this.noHp,
-      required this.gender});
+      required this.gender,
+      required this.data});
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -24,6 +55,7 @@ class User {
         password: json["password"],
         noHp: json["noHp"],
         gender: json["gender"],
+        data: json["data"],
       );
 
   String toRawJson() => json.encode(toJson());
@@ -34,5 +66,6 @@ class User {
         "password": password,
         "noHp": noHp,
         "gender": gender,
+        "data": data,
       };
 }
