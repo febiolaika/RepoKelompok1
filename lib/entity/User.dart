@@ -3,12 +3,12 @@ import 'dart:convert';
 class LoginModel {
   final dynamic status;
   final String message;
-  final User data;
+  final Map<String, dynamic>? data;
 
    LoginModel({
     required this.status,
     required this.message,
-    required this.data,
+    this.data,
   });
 
   factory LoginModel.fromRawJson(String str) =>
@@ -19,13 +19,13 @@ class LoginModel {
   factory LoginModel.fromJson(Map<String, dynamic> json) => LoginModel(
         status: json["status"],
         message: json["message"],
-        data: User.fromJson(json["data"]),
+        data: json["data"],
       );
 
   Map<String, dynamic> toJson() => {
         "status": status,
         "message": message,
-        "data": data.toJson(),
+        "data": data,
       };
 }
 

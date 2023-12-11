@@ -15,7 +15,7 @@ class ProductClient {
       required double harga,
       required int durasi,
       required http.Client client}) async {
-    String apiURL = 'http://10.0.2.2:8000/api/inputProduct';
+    String apiURL = 'http://10.0.2.2:8000/api/product';
     try {
       var apiResult = await client.post(
         Uri.parse(apiURL),
@@ -44,9 +44,15 @@ class ProductClient {
       if (response.statusCode != 200) {
         throw Exception('Failed to load products: ${response.reasonPhrase}');
       }
+      
+      // Parse the JSON data
+      var jsonData = json.decode(response.body);
+      if (jsonData == null || jsonData['data'] == null) {
+        throw Exception('Invalid JSON format or missing data field');
+      }
 
       // mengambil bagian data dari response body
-      Iterable list = json.decode(response.body)['data'];
+      Iterable list = jsonData['data'];
 
       // list.map untuk membuat list objek Barang berdasarkan tiap elemen dari list
       return list.map((e) => Product.fromJson(e)).toList();
