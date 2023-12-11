@@ -38,14 +38,14 @@ class ProductView extends ConsumerWidget {
 
   //widget untuk item dalam list
   ListTile scrollViewItem(Product product, context, ref) => ListTile(
-      title: Text(product.nama),
+      title: Text(product.name),
       subtitle: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-              "Harga: ${product.harga.toStringAsFixed(2)}"), // Convert double to String
-          Text("Durasi: ${product.durasi.toString()}"),
+              "Harga: ${product.price.toString()}"), // Convert double to String
+          Text("Durasi: ${product.duration.toString()}"),
         ],
       ),
       onTap: () => Navigator.push(

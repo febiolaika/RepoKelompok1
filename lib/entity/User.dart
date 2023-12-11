@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 class LoginModel {
-  final int status;
+  final dynamic status;
   final String message;
   final User data;
 
-  const LoginModel({
+   LoginModel({
     required this.status,
     required this.message,
     required this.data,
@@ -45,7 +45,7 @@ class User {
       required this.password,
       required this.noHp,
       required this.gender,
-      required this.data});
+      this.data});
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
   factory User.fromJson(Map<String, dynamic> json) => User(

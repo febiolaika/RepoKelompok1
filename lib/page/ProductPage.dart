@@ -5,8 +5,9 @@ import 'package:ugd6_1217/entity/product.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
 
 class ProductPage extends StatefulWidget {
-  const ProductPage({super.key, this.id});
+  const ProductPage({super.key, this.id, this.idUser});
   final int? id;
+  final int? idUser;
 
   @override
   State<ProductPage> createState() => _ProductPageState();
@@ -14,9 +15,10 @@ class ProductPage extends StatefulWidget {
 
 class _ProductPageState extends State<ProductPage> {
   final _formKey = GlobalKey<FormState>();
-  final namaController = TextEditingController();
-  final hargaController = TextEditingController();
-  final durasiController = TextEditingController();
+  final nameController = TextEditingController();
+  final priceController = TextEditingController();
+  final durationController = TextEditingController();
+  final imageController = TextEditingController();
   bool isLoading = false;
 
   void loadData() async {
@@ -28,9 +30,9 @@ class _ProductPageState extends State<ProductPage> {
       Product res = await ProductClient.find(widget.id);
       setState(() {
         isLoading = false;
-        namaController.value = TextEditingValue(text: res.nama);
-        hargaController.value = TextEditingValue(text: res.harga.toString());
-        durasiController.value = TextEditingValue(text: res.durasi.toString());
+        nameController.value = TextEditingValue(text: res.name);
+        priceController.value = TextEditingValue(text: res.price.toString());
+        durationController.value = TextEditingValue(text: res.duration.toString());
       });
     } catch (err) {
       showSnackBar(context, err.toString(), Colors.red);
@@ -51,31 +53,38 @@ class _ProductPageState extends State<ProductPage> {
   Widget build(BuildContext context) {
     //aksi ketika form disubmit
     void onSubmit() async {
-      if (!_formKey.currentState!.validate()) return;
+  if (!_formKey.currentState!.validate()) return;
 
-      //objek barang berdasarkan input
-      Product input = Product(
-        id: widget.id ?? 0,
-        nama: namaController.text,
-        harga: double.parse(hargaController.text),
-        durasi: int.parse(durasiController.text),
-        data: null,
-      );
+  // Convert text values to appropriate types
+  double price = double.parse(priceController.text);
+  int duration = int.parse(durationController.text);
 
-      try {
-        if (widget.id == null) {
-          await ProductClient.create(input);
-        } else {
-          await ProductClient.update(input);
-        }
+  // Create Product object
+  Product input = Product(
+    id: widget.id ?? 0,
+    idUser: widget.idUser ?? 0,
+    name: nameController.text,
+    price: price.toString(),
+    duration: duration.toString(),
+    image: imageController.text,
+  );
 
-        showSnackBar(context, 'Success', Colors.green);
-        Navigator.pop(context);
-      } catch (err) {
-        showSnackBar(context, err.toString(), Colors.red);
-        Navigator.pop(context);
-      }
+  try {
+    if (widget.id == null) {
+      await ProductClient.create(input);
+    } else {
+      await ProductClient.update(input);
     }
+
+    showSnackBar(context, 'Success', Colors.green);
+    Navigator.pop(context);
+  } catch (err) {
+    showSnackBar(context, err.toString(), Colors.red);
+    Navigator.pop(context);
+  }
+}
+
+
 
     return Scaffold(
       appBar: AppBar(
@@ -99,7 +108,7 @@ class _ProductPageState extends State<ProductPage> {
                           border: UnderlineInputBorder(),
                           labelText: 'Masukkan nama',
                         ),
-                        controller: namaController,
+                        controller: nameController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Field Required';
@@ -117,7 +126,7 @@ class _ProductPageState extends State<ProductPage> {
                           border: UnderlineInputBorder(),
                           labelText: 'Masukkan Harga',
                         ),
-                        controller: hargaController,
+                        controller: priceController,
                       ),
                     ),
                     Container(
@@ -129,7 +138,7 @@ class _ProductPageState extends State<ProductPage> {
                           border: UnderlineInputBorder(),
                           labelText: 'Masukkan Durasi',
                         ),
-                        controller: durasiController,
+                        controller: durationController,
                       ),
                     ),
                     Container(

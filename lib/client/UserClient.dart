@@ -23,15 +23,39 @@ class UserClient {
         Uri.parse(apiURL),
         body: {'username': username, 'password': password},
       );
+      print('API Response Status Code: ${apiResult.statusCode}');
+      print('Raw API Response: ${apiResult.body}');
       if (apiResult.statusCode == 200) {
         return LoginModel.fromRawJson(apiResult.body);
       } else {
-        throw Exception('Failed to login');
+        throw Exception('Failed to login. Status Code: ${apiResult.statusCode}');
       }
     } catch (e) {
+      print('Error during login: $e');
       return null;
     }
   }
+  // static Future<bool> login(String username, String password) async {
+  //    try {
+  //      var response = await post(
+  //        Uri.http(
+  //            url, '/api/login'), // Sesuaikan dengan endpoint login pada API Anda
+  //        body: {'username': username, 'password': password},
+  //      );
+
+  //      if (response.statusCode == 200) {
+  //        // Jika respons status code adalah 200, artinya login berhasil
+  //        return true;
+  //      } else {
+  //       // Jika respons status code tidak 200, artinya login gagal
+  //        return false;
+  //      }
+  //    } catch (e) {
+  //      // Tangani kesalahan yang mungkin terjadi selama proses login
+  //      print('Error during login: $e');
+  //      return false;
+  //    }
+  //  }
   // untuk hp
   // static final String url = '192.168.0.105';
   // static final String endpoint = '/GD_API_1097/public/api/User';
@@ -75,7 +99,7 @@ class UserClient {
       var response = await http.post(Uri.http(url, endpoint),
           headers: {"Content-Type": "application/json"},
           body: user.toRawJson());
-      print(response.body);
+       print('Response body: ${response.body}');
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
       return response;
@@ -112,47 +136,24 @@ class UserClient {
   //   }
   // }
 
-  //login
-  // static Future<bool> login(String username, String password) async {
+  // static Future<User?> logintesting({
+  //   required String username,
+  //   required String password,
+  // }) async {
+  //   String apiURL = 'http://127.0.0.1:8000/api/login';
   //   try {
-  //     var response = await post(
-  //       Uri.http(
-  //           url, '/api/login'), // Sesuaikan dengan endpoint login pada API Anda
+  //     var apiResult = await http.post(
+  //       Uri.parse(apiURL),
   //       body: {'username': username, 'password': password},
   //     );
-
-  //     if (response.statusCode == 200) {
-  //       // Jika respons status code adalah 200, artinya login berhasil
-  //       return true;
+  //     if (apiResult.statusCode == 200) {
+  //       final result = User.fromRawJson(apiResult.body);
+  //       return result;
   //     } else {
-  //       // Jika respons status code tidak 200, artinya login gagal
-  //       return false;
+  //       throw Exception('Failed to login');
   //     }
   //   } catch (e) {
-  //     // Tangani kesalahan yang mungkin terjadi selama proses login
-  //     print('Error during login: $e');
-  //     return false;
+  //     return null;
   //   }
   // }
-
-  static Future<User?> logintesting({
-    required String username,
-    required String password,
-  }) async {
-    String apiURL = 'http://127.0.0.1:8000/api/login';
-    try {
-      var apiResult = await http.post(
-        Uri.parse(apiURL),
-        body: {'username': username, 'password': password},
-      );
-      if (apiResult.statusCode == 200) {
-        final result = User.fromRawJson(apiResult.body);
-        return result;
-      } else {
-        throw Exception('Failed to login');
-      }
-    } catch (e) {
-      return null;
-    }
-  }
 }

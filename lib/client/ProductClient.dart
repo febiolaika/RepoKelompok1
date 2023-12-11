@@ -10,7 +10,7 @@ class ProductClient {
   static String endpoint = '/api/product'; // base endpoint
   static http.Client client = http.Client();
 
-  static Future<ProductModel?> login(
+  static Future<Product?> login(
       {required String nama,
       required double harga,
       required int durasi,
@@ -22,7 +22,7 @@ class ProductClient {
         body: {'nama': nama, 'harga': harga, 'durasi': durasi},
       );
       if (apiResult.statusCode == 200) {
-        return ProductModel.fromRawJson(apiResult.body);
+        return Product.fromRawJson(apiResult.body);
       } else {
         throw Exception('Failed to Input Product');
       }

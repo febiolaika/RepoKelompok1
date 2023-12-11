@@ -6,6 +6,7 @@ import 'package:ugd6_1217/page/RegisterPage.dart';
 import 'package:ugd6_1217/client/UserClient.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
 import 'package:ugd6_1217/page/RegisterPage.dart';
+import 'package:ugd6_1217/entity/User.dart';
 import 'package:http/http.dart' as http;
 
 class LoginView extends StatefulWidget {
@@ -68,60 +69,66 @@ class _LoginViewState extends State<LoginView> {
                 ),
                 SizedBox(height: 2.0.h),
                 ElevatedButton(
-                    child: const Text('Login'),
-                    onPressed: () async {
-                      final username = _usernameController.text;
-                      final password = _passwordController.text;
+  child: const Text('Login'),
+  onPressed: () async {
+    final username = _usernameController.text;
+    final password = _passwordController.text;
 
-                      bool loginSuccess =
-                          await UserClient.login(username, password);
-                      try {
-                        // Kirim permintaan ke endpoint login
-                        final response = await http.post(
-                          Uri.parse('http://10.0.2.2:8000/api/login'),
-                          body: {'username': username, 'password': password},
-                        );
+    try {
+      final http.Client client = http.Client(); // Create an instance of http.Client
 
-                        if (loginSuccess) {
-                          print('Login berhasil');
-                          // Lakukan navigasi atau tindakan lain yang diperlukan
-                          // Login berhasil
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  ProductView(), // Replace YourNextScreen with the actual screen you want to navigate to
-                            ),
-                          );
-                          // NotificationWidget.showNotification(
-                          //   title: "Notifikasi",
-                          //   body: 'Selamat Datang Kembali!');
-                          // // Lakukan navigasi atau tindakan lain yang diperlukan
-                        } else {
-                          // Login gagal
-                          showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: const Text('Login Gagal'),
-                                content:
-                                    const Text('Username atau password salah.'),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              );
-                            },
-                          );
-                        }
-                      } catch (Exception) {
-                        e.toString();
-                      }
-                    }),
+      final LoginModel? loginResult = await UserClient.login(
+        username: username,
+        password: password,
+        client: client, // Pass the http.Client instance
+      );
+
+      if (loginResult != null) {
+        if (loginResult.status == true) {
+          // Login berhasil
+          print('Login berhasil');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductView(),
+            ),
+          );
+        } else {
+          // Login gagal
+          print(loginResult.message);
+          showDialog(
+            context: context,
+            builder: (context) {
+              return AlertDialog(
+                title: const Text('Login Gagal'),
+                content: Text(loginResult.message ?? 'Terjadi kesalahan.'),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
+          );
+        }
+      } else {
+        // Handle the case where loginResult is null
+        
+        print('Status: ${loginResult?.status}');
+        print('Login result is null');
+      }
+
+      // Make sure to close the http.Client after using it
+      client.close();
+    } catch (e) {
+      // Tangani error
+      print('Error saat login: $e');
+    }
+  },
+),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
