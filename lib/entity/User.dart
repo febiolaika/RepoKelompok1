@@ -55,7 +55,7 @@ class User {
         password: json["password"],
         noHp: json["noHp"],
         gender: json["gender"],
-        data: json["data"],
+        data: json["data"] != null ? Map<String, dynamic>.from(json["data"]) : null,
       );
 
   String toRawJson() => json.encode(toJson());

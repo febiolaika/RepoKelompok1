@@ -14,7 +14,7 @@ class UserClient {
   static http.Client client = http.Client();
 
   static Future<LoginModel?> login(
-      {required String username,
+      {required  String username,
       required String password,
       required http.Client client}) async {
     String apiURL = 'http://10.0.2.2:8000/api/login';
@@ -136,24 +136,24 @@ class UserClient {
   //   }
   // }
 
-  // static Future<User?> logintesting({
-  //   required String username,
-  //   required String password,
-  // }) async {
-  //   String apiURL = 'http://127.0.0.1:8000/api/login';
-  //   try {
-  //     var apiResult = await http.post(
-  //       Uri.parse(apiURL),
-  //       body: {'username': username, 'password': password},
-  //     );
-  //     if (apiResult.statusCode == 200) {
-  //       final result = User.fromRawJson(apiResult.body);
-  //       return result;
-  //     } else {
-  //       throw Exception('Failed to login');
-  //     }
-  //   } catch (e) {
-  //     return null;
-  //   }
-  // }
+  static Future<User?> logintesting({
+    required String username,
+    required String password,
+  }) async {
+    String apiURL = 'http://127.0.0.1:8000/api/login';
+    try {
+      var apiResult = await http.post(
+        Uri.parse(apiURL),
+        body: {'username': username, 'password': password},
+      );
+      if (apiResult.statusCode == 200) {
+        final result = User.fromRawJson(apiResult.body);
+        return result;
+      } else {
+        throw Exception('Failed to login');
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 }

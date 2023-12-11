@@ -7,7 +7,7 @@ import 'package:ugd6_1217/views/camera/camera.dart';
 import 'package:ugd6_1217/views/qr_scan/scan_qr_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:ugd6_1217/page/Userpage.dart';
+import 'package:ugd6_1217/page/UserPage.dart';
 
 void main() {
   runApp(ProviderScope(child: const MainApp()));

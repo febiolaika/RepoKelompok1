@@ -5,7 +5,7 @@ import 'package:ugd6_1217/client/ProductClient.dart';
 import 'package:ugd6_1217/entity/product.dart';
 import 'package:ugd6_1217/page/ProductPage.dart';
 import 'package:ugd6_1217/page/shake.dart';
-import 'package:ugd6_1217/page/Userpage.dart';
+import 'package:ugd6_1217/page/UserPage.dart';
 
 class ProductView extends ConsumerWidget {
   ProductView({super.key});
@@ -38,14 +38,14 @@ class ProductView extends ConsumerWidget {
 
   //widget untuk item dalam list
   ListTile scrollViewItem(Product product, context, ref) => ListTile(
-      title: Text(product.name),
+      title: Text(product.nama),
       subtitle: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-              "Harga: ${product.price.toString()}"), // Convert double to String
-          Text("Durasi: ${product.duration.toString()}"),
+              "Harga: ${product.harga.toString()}"), // Convert double to String
+          Text(product.durasi),
         ],
       ),
       onTap: () => Navigator.push(

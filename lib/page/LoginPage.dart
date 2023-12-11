@@ -8,6 +8,7 @@ import 'package:ugd6_1217/page/ProductView.dart';
 import 'package:ugd6_1217/page/RegisterPage.dart';
 import 'package:ugd6_1217/entity/User.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -86,6 +87,15 @@ class _LoginViewState extends State<LoginView> {
       if (loginResult != null) {
         if (loginResult.status == true) {
           // Login berhasil
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+
+if (loginResult?.data != null) {
+  User user = User.fromJson(loginResult.data!);
+  prefs.setInt('userId', user.id);
+} else {
+  // Handle the case where loginResult.data is null
+  print('User data is null');
+}
           print('Login berhasil');
           Navigator.pushReplacement(
             context,

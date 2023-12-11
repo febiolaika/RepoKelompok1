@@ -13,7 +13,7 @@ class ProductClient {
   static Future<Product?> login(
       {required String nama,
       required double harga,
-      required int durasi,
+      required String durasi,
       required http.Client client}) async {
     String apiURL = 'http://10.0.2.2:8000/api/product';
     try {
@@ -122,7 +122,7 @@ class ProductClient {
   static Future<Product?> productTesting({
     required String nama,
     required double harga,
-    required int durasi,
+    required String durasi,
   }) async {
     String apiURL = 'http://127.0.0.1:8000/api/inputProduct';
     try {
