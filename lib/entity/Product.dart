@@ -4,37 +4,35 @@ import 'dart:convert';
 
 class Product {
   int id;
-  int idUser;
-  String name;
-  String price;
-  String duration;
-  String image;
+  String nama;
+  double harga;
+  String durasi;
+  //final Map<String, dynamic>? data;
 
   Product({
     required this.id,
-    required this.idUser,
-    required this.name,
-    required this.price,
-    required this.duration,
-    required this.image,
+    required this.nama,
+    required this.harga,
+    required this.durasi,
+    //required this.data,
   });
 
   factory Product.fromRawJson(String str) => Product.fromJson(json.decode(str));
   factory Product.fromJson(Map<String, dynamic> json) => Product(
       id: json["id"],
-      idUser: json["idUser"],
-      name: json["name"],
-      price: json["price"],
-      duration: json["duration"],
-      image: json["image"]);
+      nama: json["nama"],
+      harga: json["harga"].toDouble(),
+      durasi: json["durasi"], 
+      //data: json["data"],
+      );
 
   String toRawJson() => json.encode(toJson());
+
   Map<String, dynamic> toJson() => {
         "id": id,
-        "idUser": idUser,
-        "name": name,
-        "price": price,
-        "duration": duration,
-        "image": image,
+        "nama": nama,
+        "harga": harga,
+        "durasi": durasi,
+        //"data": data,
       };
 }
