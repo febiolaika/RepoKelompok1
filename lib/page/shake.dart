@@ -46,60 +46,7 @@ class _ShakeViewState extends State<ShakeView> {
           body: Center(
             child: Text("Shake Count $shakeCounter"),
           ),
-          bottomNavigationBar: BottomNavigationBar(
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Product',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.date_range),
-            label: 'Booking',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.vibration),
-            label: 'Shake',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: 3,
-        selectedItemColor: Colors.blue, // Change the color based on your theme
-        onTap: (index) {
-          // Handle navigation based on the index
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProductView(),
-                ),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => BookingView(),
-                ),
-              );
-              break;
-            case 2:
-              
-              break;
-            case 3:
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Userpage(),
-                ),
-              );
-              break;
-          }
-        },
-      ),
+          
         ),
       );
     });

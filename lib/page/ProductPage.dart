@@ -3,6 +3,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:ugd6_1217/client/ProductClient.dart';
 import 'package:ugd6_1217/entity/product.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
+import 'package:ugd6_1217/pdf_view.dart';
 
 class ProductPage extends StatefulWidget {
   const ProductPage({super.key, this.id});
@@ -147,7 +148,27 @@ class _ProductPageState extends State<ProductPage> {
                           widget.id == null ? 'Tambah' : 'Edit',
                         ),
                       ),
-                    )
+                    ),
+                     // Tombol untuk membuka PDF
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 25, vertical: 10),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Panggil fungsi createPdf untuk membuka PDF
+                          createPdf(
+                            namaController,
+                            hargaController,
+                            durasiController,
+                            widget.id.toString(),
+                            "DropDownValue", // Ganti dengan nilai sesuai kebutuhan
+                            context,
+                          );
+                        },
+                        child: Text('Buka PDF'),
+                      ),
+                    ),
                   ],
                 )),
       ),

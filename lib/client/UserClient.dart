@@ -40,8 +40,9 @@ class UserClient {
         prefs.setString('noHp', user.noHp);
         prefs.setString('gender', user.gender);
         // Add more user data fields as needed
+        print('berhasil');
       }
-
+      print('gagal');
       return loginResult;
       } else {
         throw Exception('Failed to login. Status Code: ${apiResult.statusCode}');
