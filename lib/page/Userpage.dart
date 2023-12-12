@@ -2,28 +2,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ugd6_1217/client/UserClient.dart';
 import 'package:ugd6_1217/entity/user.dart';
+import 'package:ugd6_1217/page/BookingView.dart';
 import 'package:ugd6_1217/page/RegisterPage.dart';
 import 'package:ugd6_1217/page/ProductView.dart';
 import 'package:ugd6_1217/page/shake.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Userpage extends ConsumerWidget {
   Userpage({super.key});
 
   //provider untuk mengambil list data User dari API
   final dataUserProvider = FutureProvider<User>((ref) async {
-  // Your asynchronous logic to fetch or create the User data
-  // For example, fetching from SharedPreferences or an API
-  // Replace this with your actual logic
+  // Retrieve user data from SharedPreferences
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  
+  // Example: Reading user data from SharedPreferences
+  final int? userId = prefs.getInt('userId');
+  final String? username = prefs.getString('username');
+  final String? email = prefs.getString('email');
+  final String? password= prefs.getString('password');
+  final String? noHp = prefs.getString('noHp');
+  final String? gender = prefs.getString('gender');
+  // Add more fields as needed
 
-  // Simulating asynchronous delay
-  await Future.delayed(Duration(seconds: 2));
-
-  // Replace the following line with your actual data fetching logic
-  // This is just a placeholder
-  final User user = User(id: 1, username: 'example', email: 'example@email.com', password: 'password', noHp: '1234567890', gender: 'Male', data: {});
+  // Create a User object with the retrieved data
+  User user = User(
+    id: userId ?? 0, // Use a default value if the data is not available
+    username: username ?? 'default', // Use a default value if the data is not available
+    email: email ?? 'default@mail.com',
+    password: password ?? 'xxx',
+    noHp: noHp ?? '123123123123',
+    gender: gender ?? 'L',
+    // Add more fields as needed
+  );
 
   return user;
 });
+
   // final listUserProvider = FutureProvider<List<User>>((ref) async {
   //   return await UserClient.fetchAll();
   // });
@@ -34,6 +49,38 @@ class Userpage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Data User"),
       ),
+      body: FutureBuilder<User?>(
+  future: ref.watch(dataUserProvider.future),
+  builder: (context, snapshot) {
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return CircularProgressIndicator();
+    } else if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else if (snapshot.hasData) {
+      // User data is available
+      User? user = snapshot.data;
+      if (user != null) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('ID: ${user.id}'),
+            Text('Username: ${user.username}'),
+            Text('Email: ${user.email}'),
+            Text('No HP: ${user.noHp}'),
+            Text('Gender: ${user.gender}'),
+            // Display more user data fields as needed
+            // ...
+          ],
+        );
+      } else {
+        return Text('User data is null');
+      }
+    } else {
+      return Text('No data available');
+    }
+  },
+),
+
       bottomNavigationBar: BottomNavigationBar(
         items: const [
           BottomNavigationBarItem(
@@ -41,8 +88,8 @@ class Userpage extends ConsumerWidget {
             label: 'Product',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.vibration),
-            label: 'Shake',
+            icon: Icon(Icons.date_range),
+            label: 'Booking',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -50,7 +97,8 @@ class Userpage extends ConsumerWidget {
           ),
         ],
         currentIndex: 2,
-        selectedItemColor: Colors.blue, // Change the color based on your theme
+        selectedItemColor: Colors.yellow[700], // Change the color based on your theme
+        backgroundColor: Colors.pink[300], // Change the color based on your theme
         onTap: (index) {
           // Handle navigation based on the index
           switch (index) {
@@ -66,7 +114,7 @@ class Userpage extends ConsumerWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => ShakeView(),
+                  builder: (context) => BookingView(),
                 ),
               );
               break;

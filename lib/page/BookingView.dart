@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import 'package:ugd6_1217/client/ProductClient.dart';
-import 'package:ugd6_1217/entity/product.dart';
-import 'package:ugd6_1217/page/BookingView.dart';
-import 'package:ugd6_1217/page/ProductPage.dart';
+import 'package:intl/intl.dart';
+import 'package:ugd6_1217/client/BookingClient.dart';
+import 'package:ugd6_1217/entity/Booking.dart';
+import 'package:ugd6_1217/page/BookingPage.dart';
 import 'package:ugd6_1217/page/shake.dart';
 import 'package:ugd6_1217/page/UserPage.dart';
+import 'package:ugd6_1217/page/ProductView.dart';
 
-class ProductView extends ConsumerWidget {
-  ProductView({super.key});
+class BookingView extends ConsumerWidget {
+  BookingView({super.key});
 
   //provider untuk mengambil list data barang dari API
-  final listProductProvider = FutureProvider<List<Product>>((ref) async {
-    return await ProductClient.fetchAll();
+  final listBookingProvider = FutureProvider<List<Booking>>((ref) async {
+    return await BookingClient.fetchAll();
   });
 
   //aksi ketika floating button ditekan
@@ -22,15 +22,15 @@ class ProductView extends ConsumerWidget {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                const ProductPage())).then((value) => ref.refresh(
-        listProductProvider)); //refresh list data barang ketika kembali ke halaman ini
+                const BookingPage())).then((value) => ref.refresh(
+        listBookingProvider)); //refresh list data barang ketika kembali ke halaman ini
   }
 
   //aksi ketika tombol delete ditekan
   void onDelete(id, context, ref) async {
     try {
-      await ProductClient.destroy(id); // menghapus data barang berdasarkan id
-      ref.refresh(listProductProvider);
+      await BookingClient.destroy(id); // menghapus data barang berdasarkan id
+      ref.refresh(listBookingProvider);
       showSnackBar(context, "Delete Success", Colors.green);
     } catch (e) {
       showSnackBar(context, e.toString(), Colors.red);
@@ -38,43 +38,44 @@ class ProductView extends ConsumerWidget {
   }
 
   //widget untuk item dalam list
-  ListTile scrollViewItem(Product product, context, ref) => ListTile(
-      title: Text(product.nama),
+  ListTile scrollViewItem(Booking booking, context, ref) => ListTile(
+      title: Text(booking.nama),
       subtitle: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-              "Harga: ${product.harga.toString()}"), // Convert double to String
-          Text(product.durasi),
+          Text("Nomor Ponsel: ${booking.nomorponsel}"),
+          Text("Tanggal Booking: ${DateFormat('yyyy-MM-dd').format(booking.tanggalbooking)}"), // Format the date
+          Text("Jam Datang: ${booking.jamdatang}"),
+          Text("Jenis Layanan: ${booking.jenislayanan}"),
         ],
       ),
       onTap: () => Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => ProductPage(id: product.id)))
-          .then((value) => ref.refresh(listProductProvider)),
+                  builder: (context) => BookingPage(id: booking.id)))
+          .then((value) => ref.refresh(listBookingProvider)),
       trailing: IconButton(
-          onPressed: () => onDelete(product.id, context, ref),
+          onPressed: () => onDelete(booking.id, context, ref),
           icon: const Icon(Icons.delete)));
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    var listener = ref.watch(listProductProvider);
+    var listener = ref.watch(listBookingProvider);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Product"),
+        title: const Text("Booking"),
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () => onAdd(context, ref),
       ),
       body: listener.when(
-        data: (products) => SingleChildScrollView(
+        data: (bookings) => SingleChildScrollView(
           child: Column(
-              children: products
-                  .map((product) => scrollViewItem(product, context, ref))
+              children: bookings
+                  .map((booking) => scrollViewItem(booking, context, ref))
                   .toList()),
         ), //muncul ketika data berhasil diambil
         error: (err, s) =>
@@ -98,22 +99,22 @@ class ProductView extends ConsumerWidget {
             label: 'Profile',
           ),
         ],
-        currentIndex: 0,
+        currentIndex: 1,
         selectedItemColor: Colors.yellow[700], // Change the color based on your theme
-        backgroundColor: Colors.pink[300], 
+        backgroundColor: Colors.pink[300], // Change the color based on your theme
         onTap: (index) {
           // Handle navigation based on the index
           switch (index) {
             case 0:
-              // Navigate to the product page
-              break;
-            case 1:
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => BookingView(),
+                  builder: (context) => ProductView(),
                 ),
               );
+              break;
+            case 1:
+              
               break;
             case 2:
               Navigator.push(

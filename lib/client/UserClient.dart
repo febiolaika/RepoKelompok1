@@ -3,7 +3,9 @@
 import 'package:ugd6_1217/entity/User.dart';
 
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class UserClient {
   //sesuaikan url dan endpoint dengan device yang kalian gunakan untuk uji coba sesuai langkah 7
@@ -26,7 +28,21 @@ class UserClient {
       print('API Response Status Code: ${apiResult.statusCode}');
       print('Raw API Response: ${apiResult.body}');
       if (apiResult.statusCode == 200) {
-        return LoginModel.fromRawJson(apiResult.body);
+        LoginModel loginResult = LoginModel.fromRawJson(apiResult.body);
+
+      // Save user data in SharedPreferences if login is successful
+      if (loginResult.status == true && loginResult.data != null) {
+        User user = User.fromJson(loginResult.data!);
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setInt('userId', user.id);
+        prefs.setString('username', user.username);
+        prefs.setString('email', user.email);
+        prefs.setString('noHp', user.noHp);
+        prefs.setString('gender', user.gender);
+        // Add more user data fields as needed
+      }
+
+      return loginResult;
       } else {
         throw Exception('Failed to login. Status Code: ${apiResult.statusCode}');
       }
@@ -35,6 +51,63 @@ class UserClient {
       return null;
     }
   }
+
+  static Future<User?> getDataUserFromServer(int userId) async {
+    try {
+      var response = await http.get(
+        Uri.http(url, '$endpoint/$userId'),
+      );
+
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return User.fromJson(json.decode(response.body)['data']);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  // static Future<User?> getDataUserFromSharedPreferences() async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   int? userId = prefs.getInt('userId');
+
+  //   if (userId != null) {
+  //     try {
+  //       return await getDataUserFromServer(userId);
+  //     } catch (e) {
+  //       return Future.error(e.toString());
+  //     }
+  //   } else {
+  //     return null;
+  //   }
+  // }
+
+  static Future<User?> getCurrentUser() async {
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  int? userId = prefs.getInt('userId');
+
+  if (userId != null) {
+    try {
+      return await getDataUserFromServer(userId);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  } else {
+    return null;
+  }
+}
+
+
+  // static Future<User?> dataUserProvider() async {
+  //   try {
+  //     return await getDataUserFromSharedPreferences();
+  //   } catch (e) {
+  //     return Future.error(e.toString());
+  //   }
+  // }
+
+  final dataUserProvider = FutureProvider<User?>((ref) async {
+    return await UserClient.getCurrentUser();
+  });
   // static Future<bool> login(String username, String password) async {
   //    try {
   //      var response = await post(

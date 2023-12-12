@@ -83,13 +83,14 @@ class _LoginViewState extends State<LoginView> {
         password: password,
         client: client, // Pass the http.Client instance
       );
+      print('Request to Server - Response: ${loginResult?.data}');
 
       if (loginResult != null) {
         if (loginResult.status == true) {
           // Login berhasil
           SharedPreferences prefs = await SharedPreferences.getInstance();
 
-if (loginResult?.data != null) {
+if (loginResult.data != null) {
   User user = User.fromJson(loginResult.data!);
   prefs.setInt('userId', user.id);
 } else {
