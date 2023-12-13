@@ -98,11 +98,14 @@ if (loginResult.data != null) {
   print('User data is null');
 }
           print('Login berhasil');
+          
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) => ProductView(),
+              
             ),
+            
           );
         } else {
           // Login gagal

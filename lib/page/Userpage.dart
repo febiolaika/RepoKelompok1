@@ -12,7 +12,7 @@ class Userpage extends ConsumerWidget {
   Userpage({super.key});
 
   //provider untuk mengambil list data User dari API
-  final dataUserProvider = FutureProvider<User>((ref) async {
+  final dataUserProvider = FutureProvider<User?>((ref) async {
   // Retrieve user data from SharedPreferences
   SharedPreferences prefs = await SharedPreferences.getInstance();
   
@@ -123,6 +123,18 @@ class Userpage extends ConsumerWidget {
               break;
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Open the ShakeView when the FloatingActionButton is pressed
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShakeView(),
+            ),
+          );
+        },
+        child: Icon(Icons.vibration),
       ),
     );
   }
